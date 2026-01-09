@@ -1,4 +1,4 @@
-# Your startup name here
+# Photogenic
 
 [My Notes](notes.md)
 

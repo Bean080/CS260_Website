@@ -11,15 +11,15 @@ My application will be called Photogenic. It is a multiplayer game based around 
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] Proper use of Markdown
-- [ ] A concise and compelling elevator pitch
-- [ ] Description of key features
-- [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [X] Proper use of Markdown
+- [X] A concise and compelling elevator pitch
+- [X] Description of key features
+- [X] Description of how you will use each technology
+- [X] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+If you need fun free thing to do with your college buddies, look no further. Photogenic is quick way for you and your friends to play imersive games, while out and about. The best part is that you only need your phone! Just upload a picture of yourself and let the fun commence. Sneak around and search for a chance to take a photo of you target in the assassin game, or use your deductive skills to find the traitor in the murder mystery mode. Careful not to get your picture taken! Once someone grabs a good photo of you, the app will let everyone know that you have been eliminated. Fun with friends is now easier than ever.
 
 ### Design
 

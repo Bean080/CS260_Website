@@ -36,9 +36,10 @@ sequenceDiagram
 
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Creation of joinable groups for games
+- Connection to the camera for photo upload
+- Connection to an API with image regonition capabilities
+- Live updates on in game eliminations
 
 ### Technologies
 

@@ -2,7 +2,7 @@
 
 [My Notes](notes.md)
 
-My application will be called Photogenic. It is a multiplayer game based around taking photos. There are multiple game modes that require you to take photos of your friends or objects given to you in a prompt. Every game involves uploading a photo of yourself in order to play. One game is assassins, which involves each player recieving an assigned target. The objective is to take a picture of that person, eliminating them from the game. The other game is a murder mystery wich involves one chosen person trying to take photos of the other participants, while the rest try to finish a scavengerhunt before they are all eliminated.
+My application will be called Photogenic. It is a multiplayer game based around taking photos. There are multiple game modes that require you to take photos of your friends or objects given to you in a prompt. Every game involves uploading a photo of yourself in order to play. One game is assassins, which involves each player recieving an assigned target. The objective is to take a picture of your target, eliminating them from the game. The other game is a murder mystery wich involves one chosen person trying to take photos of the other participants, while the rest try to finish a scavengerhunt before they are all eliminated.
 
 ## 🚀 Specification Deliverable
 
@@ -44,12 +44,12 @@ sequenceDiagram
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Forming the page struture for the sign in, lobby, gameplay, and end of game pages.
+- **CSS** - Decorative elements matching the games theme. Both darkening the display and adapting it to a phone.
+- **React** - React will be used for the buttons to set up the game as well as the sign in.
+- **Service** - The service will include analyzing photos though a connection to an api, as well as the mechanics of the game.
+- **DB/Login** - This is where account info will be stored, as well as temporary photos for the game.
+- **WebSocket** - When a photo is succesfully taken the person eliminated will be displayed
 
 ## 🚀 AWS deliverable
 

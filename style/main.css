@@ -1,21 +1,7 @@
 @font-face {
 font-family: 'rye';
 src: url('fonts/Rye-Regular.ttf') format('truetype');
-color:beige;
 }
-
-body {
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    min-height: 100vh;
-
-    font-family: 'rye';
-    color:beige;
-    background-color: rgb(84, 8, 50);
-}
-
 
 .vignette {
   position: fixed;
@@ -25,5 +11,65 @@ body {
   height: 100%;
   pointer-events: none;
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
+}
+
+body {
+    font-family: 'rye';
+    color:beige;
+    background-color: rgb(84, 8, 50);
+    margin: 0;
+
+    overflow-y: scroll;
+}
+
+header{
+  margin: 3vw;
+  min-height: 10%;
+
+  border: 2px solid rgb(36, 22, 188);
+  border-radius: 20px;
+}
+
+footer{
+  min-height: 10%;
+
+  border: 2px solid rgb(239, 239, 10);
+  border-radius: 20px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 90%;
+
+  border: 2px solid rgb(169, 61, 241);
+  border-radius: 20px;
+}
+
+
+.players {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+
+  border: 2px solid beige;
+  border-radius: 20px;
+}
+
+.player {
+  display: flex;
+  justify-items: center;
+
+  height: 15cqh;
+  border: 2px solid beige;
+  border-radius: 20px;
+}
+
+.photo {
+  height: 15cqh;
+  width: 5cqw;
+  border: 2px solid beige;
+  border-radius: 20px;
 }
 

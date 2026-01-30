@@ -23,7 +23,7 @@ If you need fun free thing to do with your college buddies, look no further. Pho
 
 Here are sketches of what the lobby people join will look like, as well as the photo page after the game starts.
 
-![Image of lobby](Lobby_page.png) ![Image of gameplay page](Photo_page.png)
+![Image of lobby](images/Lobby_page.png) ![Image of gameplay page](images/Photo_page.png)
 
 ### Key features
 

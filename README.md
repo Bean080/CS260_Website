@@ -23,7 +23,7 @@ If you need fun free thing to do with your college buddies, look no further. Pho
 
 Here are sketches of what the lobby people join will look like, as well as the photo page after the game starts.
 
-![Image of lobby](Lobby_page.png) ![Image of gameplay page](Photo_page.png)
+![Image of lobby](images/Lobby_page.png) ![Image of gameplay page](images/Photo_page.png)
 
 ### Key features
 
@@ -53,15 +53,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [X] **HTML pages** - I created 4 pages (the inital lobby, the gameplaypage, the end game page, and a sign in page).
+- [X] **Proper HTML element usage** - I headers on each relevant page and organized my pages using the body and div tags. I left a footer open should I decivde i need it later.
+- [X] **Links** - I added temporary links with a note to remove them later.
+- [X] **Text** - I included the text that prompts the user to navigate the platform.
+- [X] **3rd party API placeholder** - I added a section that will be covered by the camera. When the button next to it is pressed it will send off the photo for processsing.
+- [X] **Images** - I added images that will be replaced by the photos taken.
+- [X] **Login placeholder** - I added a link that will take you to the sign in page and later display the user name.
+- [X] **DB data placeholder** - I added place holder images that will be replace by the players photos store in the data base to summarize the game.
+- [X] **WebSocket placeholder** - The feed is going to be where peole get live updates about their game.
 
 ## 🚀 CSS deliverable
 

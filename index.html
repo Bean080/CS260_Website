@@ -1,64 +1,59 @@
 <!DOCTYPE html>
-<meta name="viewport">
-<meta>
-    name="viewport"
-    content="width=device-width --------------------------"
-</meta>
-<script src="jsfilename.js"></script>
+
+    <head>
+        <link rel="stylesheet" href="style/main.css">
+    </head>
 
 
+<body class="vignette"></html>
 
-<header>
-    <h1>Photogenic</h1>
-    <p dir="rtl"><a href="account_page.html" >Account</a></p>
-    <h4>Game Code: ####</h4>
-    <a href="https://github.com/Bean080/CS260_Website">My GitHub</a> | 
-    <a href="game_page.html">See Next Page</a> (Temporary)
-</header>
-<body>
-    <div class= "photos">
-        <img width= "80px" alt= "Player1" src="images/photo_placeholder.png">
-        <img width= "80px" alt= "Player2" src="images/photo_placeholder.png">
-        <img width= "80px" alt= "Player3" src="images/photo_placeholder.png">
-        <img width= "80px" alt= "Player4" src="images/photo_placeholder.png">
-        <img width= "80px" alt= "Player5"src="images/photo_placeholder.png">
-        <img width= "80px" alt= "Host"src="images/photo_placeholder.png">
-    </div>
-    <hr>
-    <div class= "players">
-        <form action="form.html" method="post"></form>
-            <ul>
-                <li> 
-                    <b>Player1 Name</b> 
-                </li>
-                <li> 
-                    <b>Player2 Name</b> 
-                </li>
-                <li> 
-                    <b>Player3 Name</b> 
-                </li>
-                <li> 
-                    <b>Player4 Name</b> 
-                </li>
-                <li> 
-                    <b>Player5 Name</b> 
-                </li>
-                <li class="host"> 
+    <header>
+        <h1>Photogenic</h1>
+        <p dir="rtl"><a href="account_page.html" >Account</a></p>
+        <h4>Game Code: ####</h4>
+        <a href="game_page.html">See Next Page</a> (Temporary)
+    </header>
+
+    <main>
+        <div class= "players">
+            <div class="player"> 
+                <img class= "photo" width= "80px" alt= "Player1" src="images/photo_placeholder.png">
+                <b>Player1 Name</b> 
+            </div>
+            <div class="player"> 
+                <img class= "photo" width= "80px" alt= "Player1" src="images/photo_placeholder.png">
+                <b>Player2 Name</b> 
+            </div>
+            <div class="player"> 
+                <img class= "photo" width= "80px" alt= "Player1" src="images/photo_placeholder.png">
+                <b>Player3 Name</b> 
+            </div>
+            <div class="player"> 
+                <img class= "photo" width= "80px" alt= "Player1" src="images/photo_placeholder.png">
+                <b>Player4 Name</b> 
+            </div>
+            <div class="player"> 
+                <img class= "photo" width= "80px" alt= "Player1" src="images/photo_placeholder.png">
+                <b>Player5 Name</b> 
+            </div>
+            <div class="player" class="host">
+                <img class= "photo" width= "80px" alt= "Host"src="images/photo_placeholder.png">
+                <form action="form.html" method="post">
                     <b>Host Name - </b> 
                     <label for="file1">Upload Photo</label>
                     <input type="file">
                     <button type="Submit">Send</button>
-                </li>
-            </ul>
-        </form>
-    </div>
-    <hr>
-    <div class= "games">
-        <button>Start Game</button><br>
-        <p>Game Mode Select</p>
-        <button>Murder Mystery</button><br>
-        <button>Assassins</button><br>
-    </div>
-</body>
-<footer></footer>
+                </form>
+            </div>
+        </div>
+    </main>
 
+    <footer>
+        <div class= "games">
+            <button>Start Game</button><br>
+            <p>Game Mode Select</p>
+            <button>Murder Mystery</button><br>
+            <button>Assassins</button><br>
+        </div>
+    </footer>
+</body>

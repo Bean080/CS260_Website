@@ -3,6 +3,20 @@ font-family: 'rye';
 src: url('fonts/Rye-Regular.ttf') format('truetype');
 }
 
+
+.styled_button {
+  display: inline-block;
+  text-decoration: none;
+  
+  border: 1px solid beige;
+  background-color:  beige;
+  color: rgb(84, 8, 50);
+
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 2px rgba(84, 8, 50 0.9) inset;
+}
+
 .vignette {
   position:relative;
   top: 0;
@@ -11,6 +25,10 @@ src: url('fonts/Rye-Regular.ttf') format('truetype');
   height: 100%;
   pointer-events: none;
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -40,6 +58,10 @@ header{
   border: 2px solid rgb(36, 22, 188);
   border-radius: 20px;
 
+}
+
+#code {
+  align-self: center;
 }
 
 main {
@@ -80,7 +102,7 @@ footer{
 .player {
   display: flex;
   align-items: center;
-  
+  gap: 1%;
 
   height: 15cqh;
   width: 40%;
@@ -90,8 +112,26 @@ footer{
 
 .photo {
   height: 100%;
-  width: 5cqw;
+  width: 25%;
+  object-fit: cover;
+
   border: 2px solid beige;
   border-radius: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: beige;
+    color: rgb(84, 8, 50);
+    border-radius: 10px;
+    font-family: 'rye';
+    font-size: 0.8rem;
+    border: 2px solid transparent;
+    transition: all 0.2s;
 }
 

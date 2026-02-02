@@ -63,30 +63,33 @@ footer{
 }
 
 
-
-
 .players {
   display: flex;
-  flex-direction: column;
-  width: 30vw;
-
-  height: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+  gap: 1%;
+  padding: 1%;
 
   border: 2px solid beige;
   border-radius: 20px;
+  box-sizing: border-box
 }
 
 .player {
   display: flex;
-  justify-items: center;
+  align-items: center;
+  
 
   height: 15cqh;
+  width: 40%;
   border: 2px solid beige;
   border-radius: 20px;
 }
 
 .photo {
-  height: 15cqh;
+  height: 100%;
   width: 5cqw;
   border: 2px solid beige;
   border-radius: 20px;

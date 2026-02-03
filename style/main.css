@@ -109,6 +109,7 @@ footer{
 .player {
   display: flex;
   align-items: center;
+  overflow: hidden;
   gap: 1%;
 
   height: 30%;

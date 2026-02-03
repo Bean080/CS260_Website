@@ -62,7 +62,9 @@ header{
 }
 
 #code {
+  text-decoration: none;
   align-self: center;
+  color: beige;
 }
 
 main {
@@ -107,8 +109,8 @@ footer{
   padding: 1%;
 
   border: 2px solid beige;
-  box-shadow: 0 0 60px rgba(31, 27, 27) inset;
-  background-color: rgb(12, 12, 12);
+  box-shadow: 0 0 60px rgb(49, 43, 43) inset;
+  background-color: rgb(36, 35, 35);
   border-radius: 20px;
   box-sizing: border-box
 }

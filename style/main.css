@@ -75,11 +75,12 @@ main {
   min-height: 60vh;
 }
 
-#start_button {
+.start_button {
   align-self: center;
+  align-content: center;
   margin-top: 2vh;
   width: 70%;
-  height: 10vh;
+  height: 10vh !important;
 }
 
 footer{

@@ -51,101 +51,63 @@ body {
 }
 
 header{
-  display: flex;
-  align-items: center; 
-  justify-content: space-between;
-
+  align-self: center;
+  font-size: x-large;
   margin: 1vw 3vw;
   min-height: 10vh;
   
   padding: 0 20px;
+  z-index: 99;
 }
 
-#code {
-  align-self: center;
+.message {
+    align-self: center;
 }
 
 main {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 
-  margin: 0 auto;
+  gap: 1vh;
+  margin: auto;
 
-  width: 90%;
-  min-height: 60vh;
-}
-
-#start_button {
-  align-self: center;
-  margin-top: 2vh;
-  width: 70%;
-  height: 10vh;
+  width: 90vw;
+  min-height: 1vh;
 }
 
 footer{
   min-height: 10vh;
   width: 90%;
 
-  margin: auto;
+  align-self: center;
+  padding: 2vb;
   text-align: center;
-}
-
-#games {
-  display: flex;
-  justify-content: center;
-  gap: 1%;
-}
-
-.players {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  
-  gap: 1%;
-  padding: 1%;
-
-  border: 2px solid beige;
-  box-shadow: 0 0 60px rgba(31, 27, 27) inset;
-  background-color: rgb(12, 12, 12);
-  border-radius: 20px;
-  box-sizing: border-box
 }
 
 .player {
   display: flex;
-  align-items: center;
   overflow: hidden;
+  align-items: center;
   gap: 1%;
 
-  height: 30%;
-  width: 48%;
+  min-height: 40vh;
+  min-width: 40vw;
 
-  border: 2px solid beige;
+  border: 0px solid transparent;
   border-radius: 20px;
   background-color:  beige;
-  color:rgb(84, 8, 50)
+  color:rgb(84, 8, 50);
+  
+  box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
 }
 
 .photo {
   height: 100%;
-  width: 25%;
-  object-fit: cover;
+  width: 30%;
+  object-fit:cover;
+  margin: 0;
 
-  border: 2px solid beige;
+  border: 2px solid transparent;
   border-radius: 20px;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-.file_upload {
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: rgb(84, 8, 50);
-    color: beige;
-    border-radius: 10px;
-    border: 0px solid transparent;
 }
 

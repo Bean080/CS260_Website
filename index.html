@@ -14,7 +14,7 @@
         
         <p><a href="account_page.html" class="styled_button">Account</a></p>
     </header>
-    <h4 id="code">Game Code: ####</h4>
+    <h5 id="code">Game Code: ####</h4>
     <main>
         <div class= "players">
             <div class="player"> 
@@ -41,19 +41,18 @@
                 <img class= "photo" width= "80px" alt= "Host"src="images/photo_placeholder.png">
                 <form action="form.html" method="post">
                     <b>Host Name - </b> 
-                    <label for="file-upload" class="custom-file-upload">Upload Photo</label>
+                    <label for="file-upload" class="file_upload">Upload Photo</label>
                     <input type="file">
                 </form>
             </div>
         </div>
     </main>
-
+    <button id="start_button" type= "button" class="styled_button">Start Game</button><br>
     <footer>
-        <div class= "games">
-            <button type= "button" class="btn btn-primary">Start Game</button><br>
-            <p>Game Mode Select</p>
-            <button>Murder Mystery</button><br>
-            <button>Assassins</button><br>
+        <h4>Game Mode Select</h4>
+        <div id="games">
+            <button class="styled_button">M-Mystery</button><br>
+            <button class="styled_button">Assassins</button><br>
         </div>
     </footer>
 </body>

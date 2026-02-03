@@ -3,18 +3,17 @@ font-family: 'rye';
 src: url('fonts/Rye-Regular.ttf') format('truetype');
 }
 
-
 .styled_button {
   display: inline-block;
   text-decoration: none;
-  
-  border: 1px solid beige;
+
+  border: 0px solid transparent;
   background-color:  beige;
   color: rgb(84, 8, 50);
 
-  padding: 5px;
+  padding: 5px 10px;
   border-radius: 10px;
-  box-shadow: 0 0 2px rgba(84, 8, 50 0.9) inset;
+  box-shadow: 0 0 10px rgba(84, 8, 50, 0.9) inset;
 }
 
 .vignette {
@@ -46,18 +45,14 @@ body {
 }
 
 header{
-  margin: 1vw 3vw;
-  min-height: 50px;
-  
   display: flex;
   align-items: center; 
   justify-content: space-between;
+
+  margin: 1vw 3vw;
+  min-height: 10vh;
   
   padding: 0 20px;
-
-  border: 2px solid rgb(36, 22, 188);
-  border-radius: 20px;
-
 }
 
 #code {
@@ -68,22 +63,32 @@ main {
   display: flex;
   justify-content: center;
 
-  width: 100%;
-  min-height: 90%;
+  margin: 0 auto;
 
-  flex: 1;
+  width: 90%;
+  height: 60vh;
+}
 
-  border: 2px solid rgb(169, 61, 241);
-  border-radius: 20px;
+#start_button {
+  align-self: center;
+  margin-top: 2vh;
+  width: 70%;
+  height: 10vh;
 }
 
 footer{
-  min-height: 10%;
+  min-height: 10vh;
+  width: 90%;
 
-  border: 2px solid rgb(239, 239, 10);
-  border-radius: 20px;
+  margin: auto;
+  text-align: center;
 }
 
+#games {
+  display: flex;
+  justify-content: center;
+  gap: 1%;
+}
 
 .players {
   display: flex;
@@ -95,6 +100,8 @@ footer{
   padding: 1%;
 
   border: 2px solid beige;
+  box-shadow: 0 0 60px rgba(31, 27, 27) inset;
+  background-color: rgb(12, 12, 12);
   border-radius: 20px;
   box-sizing: border-box
 }
@@ -104,10 +111,13 @@ footer{
   align-items: center;
   gap: 1%;
 
-  height: 15cqh;
-  width: 40%;
+  height: 30%;
+  width: 48%;
+
   border: 2px solid beige;
   border-radius: 20px;
+  background-color:  beige;
+  color:rgb(84, 8, 50)
 }
 
 .photo {
@@ -123,15 +133,13 @@ input[type="file"] {
     display: none;
 }
 
-.custom-file-upload {
+.file_upload {
     display: inline-block;
-    padding: 6px 12px;
-    background-color: beige;
-    color: rgb(84, 8, 50);
+    padding: 5px 10px;
+    background-color: rgb(84, 8, 50);
+    color: beige;
     border-radius: 10px;
-    font-family: 'rye';
     font-size: 0.8rem;
-    border: 2px solid transparent;
-    transition: all 0.2s;
+    border: 0px solid transparent;
 }
 

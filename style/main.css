@@ -31,19 +31,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-body {
-    display: flex;
-    flex-direction: column;
-
-    font-family: 'rye';
-    color:beige;
-    background-color: rgb(84, 8, 50);
-    margin: 0;
-    
-    overflow-y: auto; 
-    overflow-y: visible;
-    min-height: 100vh;
-}
 
 header{
   display: flex;
@@ -141,8 +128,7 @@ input[type="file"] {
     background-color: rgb(84, 8, 50);
     color: beige;
     border-radius: 10px;
-    font-size: 0.8rem;
     border: 0px solid transparent;
-    cursor: pointer;
+    
 }
 

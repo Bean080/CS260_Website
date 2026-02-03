@@ -3,6 +3,10 @@ font-family: 'rye';
 src: url('fonts/Rye-Regular.ttf') format('truetype');
 }
 
+[hidden] {
+  display: none !important;
+}
+
 .styled_button {
     display: inline-block;
     text-decoration: none;

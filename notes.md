@@ -25,11 +25,9 @@ This was easy. I added temporary links for now, since I will be doing that autom
 
 ## CSS
 
-This took a couple hours to get it how I wanted. It was important to make it responsive and Bootstrap helped with that. It looks great on all kinds of screen sizes.
+I spent forever trying to get everything lined up nice. I ran into a few issues with the shading on the screen.
 
-Bootstrap seems a bit like magic. It styles things nicely, but is very opinionated. You either do, or you do not. There doesn't seem to be much in between.
-
-I did like the navbar it made it super easy to build a responsive header.
+I am pretty happy with the font i found and the buttons I made ended up looking very nice.
 
 ```html
       <nav class="navbar navbar-expand-lg bg-body-tertiary">

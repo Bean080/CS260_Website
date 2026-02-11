@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "give-me-a-joke": "^0.5.1"
+    "bootstrap": "^5.3.8",
+    "give-me-a-joke": "^0.3.2",
+    "react-bootstrap": "^2.10.10"
   }
 }

@@ -115,7 +115,7 @@ main {
     filter: grayscale(100%);
 }
 
-footer {
+.foot {
     display: flex;
     align-items: center;
     align-self: center;
@@ -130,6 +130,14 @@ footer {
     border-radius: 20px;
     background-color:  beige;
     color:rgb(84, 8, 50)
+}
+
+footer{
+  min-height: 10vh;
+  width: 90%;
+
+  margin: auto;
+  text-align: center;
 }
 
 .photo {

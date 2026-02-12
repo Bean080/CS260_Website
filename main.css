@@ -118,7 +118,7 @@ footer{
   overflow-y: scroll;
   max-height: 60vh;
   
-  gap: 1%;
+  gap: 5px;
   padding: 1%;
 
   border: 2px solid beige;

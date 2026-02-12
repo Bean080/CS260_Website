@@ -32,6 +32,12 @@ src: url('fonts/Rye-Regular.ttf') format('truetype');
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
 }
 
+#code {
+  text-decoration: none;
+  align-self: center;
+  color: beige;
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
@@ -51,13 +57,14 @@ body {
 }
 
 header{
-  align-self: center;
-  font-size: x-large;
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+
   margin: 1vw 3vw;
   min-height: 10vh;
   
   padding: 0 20px;
-  z-index: 99;
 }
 
 .message {
@@ -66,7 +73,9 @@ header{
 
 main {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+
+  font-size: 4em;
 
   gap: 1vh;
   margin: auto;
@@ -90,7 +99,7 @@ footer{
   align-items: center;
   gap: 1%;
 
-  min-height: 40vh;
+  height: 40vh;
   min-width: 40vw;
 
   border: 0px solid transparent;
@@ -104,7 +113,7 @@ footer{
 .photo {
   height: 100%;
   width: 30%;
-  object-fit:cover;
+  object-fit:contain;
   margin: 0;
 
   border: 2px solid transparent;

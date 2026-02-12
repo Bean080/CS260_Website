@@ -61,6 +61,21 @@ header{
     padding: 0 20px;
 }
 
+#code {
+  text-decoration: none;
+  align-self: center;
+  color: beige;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+  align-items: center;
+
+  margin: 0 auto;
+}
+
 .dropdown {
     text-align: center;
 }
@@ -81,8 +96,7 @@ header{
     object-fit: cover;
 }
 
-
-main {
+div {
     display: flex;
     flex-direction: column;
 }
@@ -124,7 +138,7 @@ main {
     margin: 5vb;
 
     height: 30%;
-    width: 48%;
+    width: 80%;
 
     border: 2px solid beige;
     border-radius: 20px;
@@ -135,7 +149,7 @@ main {
 footer{
   min-height: 10vh;
   width: 90%;
-
+  padding-top: 2vh;
   margin: auto;
   text-align: center;
 }

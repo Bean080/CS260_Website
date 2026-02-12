@@ -1,26 +1,36 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="account.css">
 </head>
 
 
 <body>
     <div class="vignette"></div>
 
-    <Header>
-        <h1>Sign In</h1>
-    </Header>
+    <header>
+        <h1>Photogenic</h1>
+        <h5 id="code">Game Code: ####</h5>
+        <a href="account_page.html" class="styled_button">Account</a>
+    </header>
 
     <main>
-        <form action="index.html" method="post">
-            <label for= "user">Username</label>
-            <input id= "user" type= "text" required>
-            <br>
-            <label for= "password">Password</label>
-            <input id= "password" type="password" required>
-            <br>
-            <button class="styled_button" type="Submit">Submit</button>
+        <form action="../../index.html" method="post">
+            <div id="center">
+                <div>
+                    <label for= "user">Username</label>
+                    <input id= "user" type= "text" required>
+                </div>
+                <div>
+                    <label for= "password">Password</label>
+                    <input id= "password" type="password" required>
+                </div>
+            </div>
+            <button id= "center" class="styled_button" type="Submit">Submit</button>
         </form>
     </main>
+
+    <footer>
+        <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
+    </footer>
 </body>

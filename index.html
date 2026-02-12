@@ -1,62 +1,16 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
 
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="main.css">
-    </head>
-
-<body>
-    <div class="vignette"></div>
-    <header>
-        <h1>Photogenic</h1>
-        <h5 id="code">Game Code: ####</h5>
-        <a href="account_page.html" class="styled_button">Account</a>
-    </header>
-    <main>
-        <div class= "players">
-            <div class="player"> 
-                <img class= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png">
-                <b>Player1 Name</b> 
-            </div>
-            <div class="player"> 
-                <img class= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png">
-                <b>Player2 Name</b> 
-            </div>
-            <div class="player"> 
-                <img class= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png">
-                <b>Player3 Name</b> 
-            </div>
-            <div class="player"> 
-                <img class= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png">
-                <b>Player4 Name</b> 
-            </div>
-            <div class="player"> 
-                <img class= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png">
-                <b>Player5 Name</b> 
-            </div>
-            <div class="player">
-                <img class= "photo" width= "80px" alt= "Host"src="../../images/photo_placeholder.png">
-                <form action="form.html" method="post">
-                    <b>Host Name - </b> 
-                    <label for="file-upload" class="file_upload">Upload Photo</label>
-                    <input id="file-upload" type="file">
-                </form>
-            </div>
-        </div>
-        <div>
-            <button hidden type= "button" class="styled_button start_button">Start Game</button><br>
-            <a href="src/game/game_page.html" class="styled_button start_button">Start</a>
-        </div>
-        <div class="foot">
-            <h4>Game Mode Select</h4>
-            <div id="games">
-                <button class="styled_button">M-Mystery</button><br>
-                <button class="styled_button">Assassins</button><br>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
-    </footer>
-</body>
+    <title>Simon React</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/index.jsx"></script>
+  </body>
+</html>

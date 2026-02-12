@@ -1,0 +1,134 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 375px;
+}
+
+@font-face {
+font-family: 'rye';
+src: url('../../fonts/Rye-Regular.ttf') format('truetype');
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.styled_button {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+
+  border: 0px solid transparent;
+  background-color:  beige;
+  font-family: 'rye';
+  color: rgb(84, 8, 50);
+
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
+}
+
+.vignette {
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  font-family: 'rye';
+  color:beige;
+  background-color: rgb(84, 8, 50);
+  margin: 0;
+  
+  overflow-y: auto; 
+  overflow-y: visible;
+  min-height: 100vh;
+}
+
+header{
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+
+  margin: 1vw 3vw;
+  min-height: 10vh;
+  
+  padding: 0 20px;
+}
+
+#code {
+  text-decoration: none;
+  align-self: center;
+  color: beige;
+}
+
+main {
+  align-self: center;
+  align-content: left;
+  width: 60vw;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  margin: 0 auto;
+
+  gap: 1vh;
+  width: 90%;
+  height: 60vh;
+}
+
+footer{
+  min-height: 10vh;
+  width: 90%;
+  padding-top: 2vh;
+  margin: auto;
+  text-align: center;
+}
+
+#games {
+  display: flex;
+  justify-content: center;
+  gap: 1%;
+}
+
+.players::-webkit-scrollbar {
+  display: none;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  gap: 1%;
+
+  height: 30%;
+  width: 90%;
+
+  border: 2px solid beige;
+  border-radius: 20px;
+  background-color:  beige;
+  color:rgb(84, 8, 50)
+
+}
+
+#center {
+  gap: 1vh;
+  text-align: center;
+  display:block;
+  margin: 0 auto;
+  
+}

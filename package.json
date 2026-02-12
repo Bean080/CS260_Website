@@ -12,6 +12,23 @@
   "dependencies": {
     "bootstrap": "^5.3.8",
     "give-me-a-joke": "^0.3.2",
-    "react-bootstrap": "^2.10.10"
-  }
+    "react": "^19.2.4",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bean080/CS260_Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Bean080/CS260_Website/issues"
+  },
+  "homepage": "https://github.com/Bean080/CS260_Website#readme"
 }

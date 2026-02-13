@@ -42,3 +42,7 @@ main::-webkit-scrollbar{
   border: 2px transparent;
   height: fit-content;
 }
+
+#end .styled_button{
+  width: 70%;
+}

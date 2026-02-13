@@ -9,17 +9,17 @@ export function Game() {
                 View Target
             </button>
             <div className="dropdown-menu">
-                <img alt="Photo of Target" src="../../images/photo_placeholder.png" className="target_picture"></img>
+                <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
                 <h3 className="mt-2">Target Name</h3>
             </div>
         </div>
 
         <div>
-            <img alt= "Camera" src= "../../images/camera_placeholder.jpg"></img>
+            <img alt= "Camera" src= "camera_placeholder.jpg"></img>
         </div>
 
         <section className="foot">
-            <img className= "photo" width= "140px" height= "160px" alt= "Photo of victim" src= "../../images/photo_placeholder.png"></img>
+            <img className= "photo" width= "140px" height= "160px" alt= "Photo of victim" src= "photo_placeholder.png"></img>
                 <h3>Recent Player Out</h3>
         </section>
         <a className="styled_button" href="../finish/game_finish.html">End Game</a>

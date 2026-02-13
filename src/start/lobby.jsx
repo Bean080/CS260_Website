@@ -6,27 +6,27 @@ export function Lobby() {
     <main id="lobby">
         <div className= "players">
             <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
                 <b>Player1 Name</b> 
             </div>
             <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
                 <b>Player2 Name</b> 
             </div>
             <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
                 <b>Player3 Name</b> 
             </div>
             <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
                 <b>Player4 Name</b> 
             </div>
             <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
                 <b>Player5 Name</b> 
             </div>
             <div className="player">
-                <img className= "photo" width= "80px" alt= "Host"src="../../images/photo_placeholder.png"></img>
+                <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>
                 <form action="form.html" method="post">
                     <b>Host Name - </b> 
                     <label for="file-upload" className="file_upload">Upload Photo</label>

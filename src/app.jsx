@@ -1,5 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './app.css';
 
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
@@ -12,19 +13,28 @@ import { Account } from './account/account.jsx';
 export default function App() {
   return (
     <BrowserRouter>
-        <body>
+      <body>
         <div class="vignette"></div>
-            <header>
+          <header>
             <nav className="navbar fixed-top navbar-dark">
                 <h1>Photogenic</h1>
                 <menu className="navbar-nav">
                   <li className="nav-item">
-                    <NavLink className='nav-link' to='account'>Account</NavLink>
+                    <NavLink className='nav-link styled_button' to=''>Home</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className='nav-link styled_button' to='game'>Game</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className='nav-link styled_button' to='end'>End</NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className='nav-link styled_button' to='account'>Account</NavLink>
                   </li>
                 </menu>
             </nav>
-            </header>
-            <h5 id="code">Game Code: ####</h5>
+          </header>
+          <h5 id="code">Game Code: ####</h5>
             
 
             <Routes>
@@ -38,7 +48,7 @@ export default function App() {
             <footer>
                 <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
             </footer>
-        </body>
+      </body>
     </BrowserRouter>
   );
 }

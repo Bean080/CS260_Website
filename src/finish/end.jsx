@@ -1,8 +1,9 @@
 import React from 'react';
+import './end.css';
 
 export function End() {
   return (
-    <main>
+    <main id='end'>
         <div className="player">
             <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src="../../images/photo_placeholder.png"></img>
             <p>Player Name</p>

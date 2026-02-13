@@ -29,13 +29,14 @@ src: url('../../fonts/Rye-Regular.ttf') format('truetype');
 }
 
 .vignette {
-  position:fixed;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
+  z-index: 2;
 }
 
 body::-webkit-scrollbar {
@@ -71,6 +72,12 @@ h1 {
     display: flex;
     flex-direction:row;
     justify-content: space-between;
+    gap: 5px;
+    overflow: hidden;
+}
+
+.nav-link.active {
+    color: rgb(44, 44, 42) !important;
 }
 
 header{
@@ -81,9 +88,12 @@ header{
   justify-content: space-between;
 
   margin: 1vw 3vw;
-  min-height: 10vh;
+  height: 15vh;
   
   padding: 0 20px;
+  background-color:  rgb(84, 8, 50);
+  position: relative;
+  z-index: 1;
 }
 
 #code {
@@ -96,7 +106,9 @@ main {
   align-content: center;
   text-align: center;
   width: 60vw;
-  height: 75vh;
+  height: 68vh;
+  position: relative;
+  z-index: 997;
 }
 
 form {
@@ -117,6 +129,9 @@ footer{
   padding-top: 2vh;
   margin: auto;
   text-align: center;
+  background-color:  rgb(84, 8, 50);
+  position: relative;
+  z-index: 1;
 }
 
 #games {

@@ -5,60 +5,7 @@ src: url('fonts/Rye-Regular.ttf') format('truetype');
 
 [hidden] {
   display: none !important;
-}
-
-.styled_button {
-    display: inline-block;
-    text-decoration: none;
-    text-align: center;
-
-    border: 0px solid transparent;
-    background-color:  beige;
-    color: rgb(84, 8, 50);
-
-    padding: 5px 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
-}
-
-.vignette {
-    position:fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
-}
-
-body::-webkit-scrollbar {
-  display: none;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-
-    font-family: 'rye';
-    color:beige;
-    background-color: rgb(84, 8, 50);
-    margin: 0;
-    
-    overflow-y: auto; 
-    overflow-y: visible;
-    min-height: 100vh;
-}
-
-
-header{
-    display: flex;
-    align-items: center; 
-    justify-content: space-between;
-
-    margin: 1vw 3vw;
-    min-height: 10vh;
-
-    padding: 0 20px;
+  border: 2px solid black;
 }
 
 #code {
@@ -67,7 +14,7 @@ header{
   color: beige;
 }
 
-main {
+main#game {
   display: flex;
   flex-direction: column;
   justify-content:space-between;
@@ -81,27 +28,33 @@ main {
 }
 
 .dropdown-menu {
+    display: none !important;
     background-color: beige;
     border: 2px solid rgb(84, 8, 50);
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 0 200px rgba(0,0,0,0.5);
     min-width: 20 vw;
     color: rgb(84, 8, 50);
     text-align: center;
+    flex-direction: initial !important;
 }
 
-.target_picture {
+.dropdown-menu.show {
+    display: block !important; 
+}
+
+#game .target_picture {
     border: 2px solid rgb(84, 8, 50);
     border-radius: 10px;
     object-fit: cover;
 }
 
-div {
+#game div {
     display: flex;
     flex-direction: column;
 }
 
-.camera {
+#game .camera {
     margin: 2vb;
     width: 70vw;
     height: 70vh;
@@ -109,7 +62,7 @@ div {
     object-fit:contain;
 }
 
-.photo_button {
+#game .photo_button {
     display: inline-block;
     text-decoration: none;
     text-align: center;
@@ -125,11 +78,7 @@ div {
     box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
 }
 
-.camera_emoji {
-    filter: grayscale(100%);
-}
-
-.foot {
+#game .foot {
     display: flex;
     align-items: center;
     align-self: center;
@@ -146,14 +95,6 @@ div {
     color:rgb(84, 8, 50)
 }
 
-footer{
-  min-height: 10vh;
-  width: 90%;
-  padding-top: 2vh;
-  margin: auto;
-  text-align: center;
-}
-
-.photo {
+#game .photo {
     object-fit: cover;
 }

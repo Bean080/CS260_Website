@@ -1,122 +1,44 @@
-@font-face {
-font-family: 'rye';
-src: url('fonts/Rye-Regular.ttf') format('truetype');
+main#end {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow-y: scroll;
+  max-height: 60vh;
+  
+  gap: 5px;
+  padding: 1%;
+
+  border: 2px solid beige;
+  box-shadow: 0 0 60px rgb(49, 43, 43) inset;
+  background-color: rgb(36, 35, 35) !important;
+  border-radius: 20px;
+  box-sizing: border-box
 }
 
-[hidden] {
-  display: none !important;
-}
-
-.styled_button {
-  display: inline-block;
-  text-decoration: none;
-  text-align: center;
-
-  border: 0px solid transparent;
-  background-color:  beige;
-  font-family: 'rye';
-  color: rgb(84, 8, 50);
-
-  padding: 5px 10px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
-}
-
-.vignette {
-  position:fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
-}
-
-#code {
-  text-decoration: none;
-  align-self: center;
-  color: beige;
-}
-
-body::-webkit-scrollbar {
+main::-webkit-scrollbar{
   display: none;
 }
 
-body {
+#end .player {
   display: flex;
-  flex-direction: column;
-
-  font-family: 'rye';
-  color:beige;
-  background-color: rgb(84, 8, 50);
-  margin: 0;
-  
-  overflow-y: auto; 
-  overflow-y: visible;
-  min-height: 100vh;
-}
-
-header{
-  display: flex;
-  align-items: center; 
-  justify-content: space-between;
-
-  margin: 1vw 3vw;
-  min-height: 10vh;
-  
-  padding: 0 20px;
-}
-
-.message {
-    align-self: center;
-}
-
-main {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-
-  font-size: 4em;
-
-  gap: 1vh;
-  margin: auto;
-
-  width: 90vw;
-  min-height: 1vh;
-}
-
-footer{
-  min-height: 10vh;
-  width: 90%;
-
-  align-self: center;
-  padding: 2vb;
-  text-align: center;
-}
-
-.player {
-  display: flex;
-  overflow: hidden;
   align-items: center;
+  overflow: hidden;
   gap: 1%;
 
-  height: 40vh;
-  min-width: 40vw;
+  height: 30%;
+  width: 90%;
 
-  border: 0px solid transparent;
+  border: 2px solid black;
   border-radius: 20px;
-  background-color:  beige;
+  background-color:  black;
   color:rgb(84, 8, 50);
-  
-  box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
+  font-size: 2rem;
+  box-shadow: 0 0 60px rgba(20, 20, 20, 0.9) inset;
+
 }
 
-.photo {
-  height: 100%;
-  width: 30%;
-  object-fit:contain;
-  margin: 0;
-
-  border: 2px solid transparent;
-  border-radius: 20px;
+#end .photo {
+  border: 2px transparent;
+  height: fit-content;
 }
-

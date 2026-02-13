@@ -1,8 +1,9 @@
 import React from 'react';
+import './main.css';
 
 export function Lobby() {
   return (
-    <main>
+    <main id="lobby">
         <div className= "players">
             <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="../../images/photo_placeholder.png"></img>

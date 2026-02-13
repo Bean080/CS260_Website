@@ -78,9 +78,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - I installed and delpoyed the app with vite
+- [x] **Components** - Every page is now a component that can be injected into the header and footer page.
+- [x] **Router** - There is a router to navigate the pages. This WILL look different once functionality is added.
 
 ## 🚀 React part 2: Reactivity deliverable
 

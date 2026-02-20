@@ -12,9 +12,25 @@ import { Account } from './account/account.jsx';
 
 
 export default function App() {
-  const [gameCode, setGameCode] = React.useState("####");
+  const players = new Map();
+  const myLobby = {
+    host: "Host",
+    code: "####",
+    players: players,
 
+    reset: function() {
+      this.host = "Host",
+      this.code = "####",
+      this.status = "lobby"
+      this.players = players.clear()
+    }
+  }
+  localStorage.setItem("lobby", myLobby)
 
+  const [gameCode, setGameCode] = React.useState(localStorage.getItem("code")||"####");
+  const [user, setUser] = React.useState(localStorage.getItem("user") || null);
+  const [lobby, setLobby] = React.useState(myLobby)
+  
 
   return (
     <BrowserRouter>
@@ -22,16 +38,10 @@ export default function App() {
         <div className="vignette"></div>
           <header>
             <nav className="navbar fixed-top navbar-dark">
-                <h1>Photogenic</h1>
+                <h1>Photogenic {user && "-"} {user}</h1>
                 <menu className="navbar-nav">
                   <li className="nav-item">
                     <NavLink className='nav-link styled_button' to=''>Home</NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className='nav-link styled_button' to='game'>Game</NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className='nav-link styled_button' to='end'>End</NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink className='nav-link styled_button' to='account'>Account</NavLink>
@@ -43,10 +53,10 @@ export default function App() {
             
 
             <Routes>
-                <Route path='/' element={<Lobby />} exact />
-                <Route path='/game' element={<Game />} />
-                <Route path='/end' element={<End />} />
-                <Route path='/account' element={<Account setGameCode={setGameCode} />} />
+                <Route path='/' element={<Lobby user={user} lobby={lobby}/>} exact />
+                <Route path='/game' element={<Game user={user} lobby={lobby}/>} />
+                <Route path='/end' element={<End user={user} lobby={lobby}/>} />
+                <Route path='/account' element={<Account setGameCode={setGameCode} setUser={setUser} user={user} lobby={lobby}/>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 

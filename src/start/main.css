@@ -102,11 +102,12 @@ footer{
 
 .players {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
   overflow-y: scroll;
-  max-height: 60vh;
+  height: 60vh;
+  min-width: 80%;
   
   gap: 5px;
   padding: 1%;
@@ -128,7 +129,7 @@ footer{
   overflow: hidden;
   gap: 1%;
 
-  height: 30%;
+  min-height: 30%;
   width: 90%;
 
   border: 2px solid beige;

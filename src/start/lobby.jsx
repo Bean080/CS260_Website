@@ -29,7 +29,7 @@ export function Lobby() {
                 <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>
                 <form action="form.html" method="post">
                     <b>Host Name - </b> 
-                    <label for="file-upload" className="file_upload">Upload Photo</label>
+                    <label htmlFor="file-upload" className="file_upload">Upload Photo</label>
                     <input id="file-upload" type="file"></input>
                 </form>
             </div>

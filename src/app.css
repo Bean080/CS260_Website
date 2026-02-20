@@ -36,7 +36,7 @@ src: url('../../fonts/Rye-Regular.ttf') format('truetype');
   height: 100vh;
   pointer-events: none;
   box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
-  z-index: 2;
+  z-index: 9999;
 }
 
 body::-webkit-scrollbar {
@@ -93,7 +93,6 @@ header{
   padding: 0 20px;
   background-color:  rgb(84, 8, 50);
   position: relative;
-  z-index: 1;
 }
 
 #code {
@@ -108,7 +107,6 @@ main {
   width: 60vw;
   height: 68vh;
   position: relative;
-  z-index: 997;
 }
 
 form {
@@ -131,7 +129,6 @@ footer{
   text-align: center;
   background-color:  rgb(84, 8, 50);
   position: relative;
-  z-index: 1;
 }
 
 #games {

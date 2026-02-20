@@ -10,11 +10,16 @@ import { End } from './finish/end.jsx';
 import { Account } from './account/account.jsx';
 
 
+
 export default function App() {
+  const [gameCode, setGameCode] = React.useState("####");
+
+
+
   return (
     <BrowserRouter>
-      <body>
-        <div class="vignette"></div>
+      <div className="app-root">
+        <div className="vignette"></div>
           <header>
             <nav className="navbar fixed-top navbar-dark">
                 <h1>Photogenic</h1>
@@ -34,21 +39,21 @@ export default function App() {
                 </menu>
             </nav>
           </header>
-          <h5 id="code">Game Code: ####</h5>
+          <h5 id="code">Game Code: {gameCode}</h5>
             
 
             <Routes>
                 <Route path='/' element={<Lobby />} exact />
                 <Route path='/game' element={<Game />} />
                 <Route path='/end' element={<End />} />
-                <Route path='/account' element={<Account />} />
+                <Route path='/account' element={<Account setGameCode={setGameCode} />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 
             <footer>
                 <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
             </footer>
-      </body>
+      </div>
     </BrowserRouter>
   );
 }

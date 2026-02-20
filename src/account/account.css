@@ -1,19 +1,16 @@
-form {
+
+.center {
   display: flex;
   flex-direction: column;
   justify-content:center;
   align-items: center;
-  margin: 0 auto;
+  margin: 2rem auto;
 
   gap: 1vh;
   width: 90%;
-  height: 60vh;
-}
 
-#center {
   gap: 1vh;
   text-align: center;
   display:block;
-  margin: 0 auto;
   
 }

@@ -22,16 +22,6 @@ src: url('../../fonts/Rye-Regular.ttf') format('truetype');
   box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
 }
 
-.vignette {
-  position:fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  box-shadow: 0 0 200px rgba(0, 0, 0, 0.9) inset;
-}
-
 body::-webkit-scrollbar {
   display: none;
 }

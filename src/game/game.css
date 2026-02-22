@@ -16,10 +16,11 @@ src: url('fonts/Rye-Regular.ttf') format('truetype');
 main#game {
   display: flex;
   flex-direction: column;
-  justify-content:space-between;
+  justify-content:space-around;
   align-items: center;
 
   margin: 0 auto;
+  
 }
 
 #game .hide_dropdown {
@@ -31,15 +32,23 @@ main#game {
 }
 
 #game .dropdown_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content:space-evenly;
+
     position: absolute;
-    width: 500px;
+    width: 25vw;
+    height: 40vh;
     left: 50%;
     transform: translateX(-50%);
 
     border: 2px solid beige;
     border-radius: 20px;
     background-color:  beige;
-    color:rgb(84, 8, 50)
+    color:rgb(84, 8, 50);
+    z-index: 999;
 }
 
 .dropdown:hover .dropdown-content {
@@ -49,33 +58,11 @@ main#game {
 #game .target_picture {
     border: 2px solid rgb(84, 8, 50);
     border-radius: 10px;
-    object-fit: cover;
+    object-fit:cover;
+    height: 80%;
+    width: 60%;
 }
 
-
-#game .camera {
-    margin: 2vb;
-    width: 70vw;
-    height: 70vh;
-    align-self: center;
-    object-fit:contain;
-}
-
-#game .photo_button {
-    display: inline-block;
-    text-decoration: none;
-    text-align: center;
-    align-self: center;
-
-    border: 0px solid transparent;
-    background-color:   rgba(31, 27, 27);
-    color: rgb(84, 8, 50);
-    
-    padding: 20px 18px;
-    border-radius: 100px;
-    width: 5vw;
-    box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
-}
 
 #game .toast {
     display: flex;
@@ -108,13 +95,59 @@ main#game {
     justify-content: center;
 }
 
-
-#webcam {
-    max-height: 70vh;
+#game .camera {
+    position: relative;
+    display: inline-block;
     width: 100%;
     max-width: 70vw;
+}
+
+#webcam {
+    max-height: 80vh;
+    width: 100%;
+    max-width: 80vw;
 
     border-radius: 10px;
     transform: scaleX(-1);
+}
+
+.cam_button {
+    position: absolute;
+    bottom: 1vh;
+    left: 50%;
+    transform: translatex(-50%);
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    background-color: beige;
+    border: transparent;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.9) inset;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner_circle {
+
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    background-color: transparent;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+.flash-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    pointer-events: none;
 }
 

@@ -16,6 +16,7 @@ export default function App() {
   const myLobby = {
     host: "Host",
     code: "####",
+    mode: "Assassins",
     players: players,
 
     reset: function() {
@@ -38,20 +39,19 @@ export default function App() {
         <div className="vignette"></div>
           <header>
             <nav className="navbar fixed-top navbar-dark">
-                <h1>Photogenic {user && "-"} {user}</h1>
-                <menu className="navbar-nav">
-                  <li className="nav-item">
-                    <NavLink className='nav-link styled_button' to=''>Home</NavLink>
-                  </li>
-                  <li className="nav-item">
-                    <NavLink className='nav-link styled_button' to='account'>Account</NavLink>
-                  </li>
-                </menu>
+              <h1>Photogenic {user && "-"} {user}</h1>
+              <menu className="navbar-nav">
+                <li className="nav-item">
+                  <NavLink className='nav-link styled_button' to=''>Home</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className='nav-link styled_button' to='account'>Account</NavLink>
+                </li>
+              </menu>
             </nav>
           </header>
           <h5 id="code">Game Code: {gameCode}</h5>
             
-
             <Routes>
                 <Route path='/' element={<Lobby user={user} lobby={lobby}/>} exact />
                 <Route path='/game' element={<Game user={user} lobby={lobby}/>} />
@@ -60,9 +60,9 @@ export default function App() {
                 <Route path='*' element={<NotFound />} />
             </Routes>
 
-            <footer>
-                <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
-            </footer>
+          <footer>
+              <a id="code" href="https://github.com/Bean080/CS260_Website/tree/main">Benjamin Clarke - GitHub (clickhere)</a>
+          </footer>
       </div>
     </BrowserRouter>
   );

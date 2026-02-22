@@ -70,7 +70,8 @@ export function Lobby({user, lobby}) {
         <div>
             {user && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
         </div>
-        <div className="foot">
+        <button className="styled_button test" onClick={() => lobbyTest()}>Add Player (test)</button>
+        <div hidden className="foot">
             <h4>Game Mode Select</h4>
             <div id="games">
                 <button className="styled_button" onClick={() => lobbyTest()}>M-Mystery</button>

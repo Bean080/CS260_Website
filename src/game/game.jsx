@@ -54,17 +54,15 @@ export function Game({ user, lobby }) {
             const imageData = canvas.toDataURL('image/png');
             localStorage.setItem("photo", imageData);
             setImage(imageData);
-
-            setFlash(true);
-            setTimeout(() => setFlash(false), 150);
+            pop(imageData)
         }
     }
 
     //notifications
-    function pop(){
+    function pop(takenPhoto){
         toast( (t) => (
             <div className="toast">
-                <img className="photo" alt="Photo of victim" src={image ? image : "photo_placeholder.png"}></img>
+                <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
                 <h3>Recent Player Out</h3>
             </div>
         ));
@@ -91,7 +89,7 @@ export function Game({ user, lobby }) {
                 </button>
 
                 <div className={`${dropdown} dropdown_content`}>
-                    <img alt="Photo of Target" src={image ? image : "photo_placeholder.png"} className="target_picture"></img>
+                    <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
                     <h3>Target Name</h3>
                 </div>
             </div>
@@ -104,7 +102,6 @@ export function Game({ user, lobby }) {
                     {!cameraOn && <button className="styled_button start_cam" onClick={() => setCamera(true)}>Start Camera</button>}
                     {cameraOn && <button className="cam_button" onClick={() => takePhoto()}><div className="inner_circle"></div></button>}
                 </div>
-                <img src={image}></img>
             </div>
             
 

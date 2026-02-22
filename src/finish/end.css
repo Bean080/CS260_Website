@@ -1,4 +1,11 @@
-main#end {
+.end {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1vh;
+}
+
+div#end {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -13,10 +20,10 @@ main#end {
   box-shadow: 0 0 60px rgb(49, 43, 43) inset;
   background-color: rgb(36, 35, 35) !important;
   border-radius: 20px;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
-main::-webkit-scrollbar{
+#end::-webkit-scrollbar{
   display: none;
 }
 
@@ -26,7 +33,7 @@ main::-webkit-scrollbar{
   overflow: hidden;
   gap: 1%;
 
-  height: 30%;
+  min-height: 30%;
   width: 90%;
 
   border: 2px solid black;
@@ -35,11 +42,15 @@ main::-webkit-scrollbar{
   color:rgb(84, 8, 50);
   font-size: 2rem;
   box-shadow: 0 0 60px rgba(20, 20, 20, 0.9) inset;
-
 }
 
 #end .photo {
-  border: 2px transparent;
+  height: 50%;
+  width: 25%;
+  object-fit: cover;
+
+  border: 2px solid beige;
+  border-radius: 20px;
   height: fit-content;
 }
 

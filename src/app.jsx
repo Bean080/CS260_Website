@@ -13,18 +13,56 @@ import { Account } from './account/account.jsx';
 
 export default function App() {
   const players = new Map();
+  const testPlayers = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"];
   const myLobby = {
     host: "Host",
     code: "####",
+    status: "lobby",
     mode: "Assassins",
+    playerCount: 1,
     players: players,
+    testPlayers: testPlayers,
 
     reset: function() {
       this.host = "Host",
       this.code = "####",
-      this.status = "lobby"
+      this.status = "lobby",
       this.players = players.clear()
-    }
+    },
+
+    addPlayer: function() {
+      if (this.playerCount < 8) {
+        let added = false;
+        while (!added) {
+          const num = Math.floor(Math.random() * testPlayers.length);
+          let player = testPlayers[num];
+          if (!this.players.has(player)) {
+            this.playerCount = this.playerCount +1;
+            players.set(player,this.playerCount);
+            added = true;
+          }
+        }
+      }
+    },
+
+    getPlayer: function(num) {
+      for (const player of this.players.keys()) {
+        if (this.players.get(player) === num) {
+          return player;
+        }
+      }
+    },
+
+    removePlayer: function(playerLeaving) {
+      players.delete(playerLeaving);
+      let playerNum = 2;
+      const adjustedLobby = new Map()
+      for (const player of players.keys()) {
+        adjustedLobby.set(player,playerNum);
+        playerNum +=1;
+      }
+      this.players = adjustedLobby;
+    },
   }
   localStorage.setItem("lobby", myLobby)
 
@@ -32,7 +70,6 @@ export default function App() {
   const [user, setUser] = React.useState(localStorage.getItem("user") || null);
   const [lobby, setLobby] = React.useState(myLobby)
   
-
   return (
     <BrowserRouter>
       <div className="app-root">

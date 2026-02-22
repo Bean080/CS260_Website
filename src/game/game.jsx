@@ -1,16 +1,33 @@
 import React, { useRef, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import {LinkedList} from "./linkedList.js";
 import './game.css';
 import { useNavigate } from 'react-router-dom';
 
 
 export function Game({ user, lobby }) {
+    const game = {
+        allPlayers: lobby.players,
+
+        createOrder: function() {
+            null
+        }
+        
+
+    }
+
+
+
+
+
+
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
 
     function end() {
         lobby.status = "ending";
+        console.log(lobby.status)
         navigate("/end");
     }
 
@@ -54,18 +71,38 @@ export function Game({ user, lobby }) {
             const imageData = canvas.toDataURL('image/png');
             localStorage.setItem("photo", imageData);
             setImage(imageData);
-            pop(imageData)
+            confirmOut(imageData);
+            out(imageData);
         }
     }
 
     //notifications
-    function pop(takenPhoto){
-        toast( (t) => (
-            <div className="toast">
+    function out(takenPhoto){
+        toast.custom(
+            <div className="out">
                 <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
                 <h3>Recent Player Out</h3>
-            </div>
-        ));
+            </div>,
+            {style: {
+                background: 'transparent',
+                minWidth: "90vw",
+                minHeight: "40vh",
+            },}
+        );
+    };
+
+    function confirmOut(takenPhoto){
+        toast.custom(
+            <div className="confirmation">
+                <p></p>
+            </div>,
+            {style: {
+                background: 'beige',
+                minWidth: "90vw",
+                minHeight: "90vh",
+            },}
+        );
+
     };
 
     //target
@@ -82,7 +119,10 @@ export function Game({ user, lobby }) {
 
     return (
         <main id='game'>
-            <div><Toaster position="center"/></div>
+            <div><Toaster position="center" toastOptions={{
+                className: '',
+                
+            }}/></div>
             <div className="dropdown">
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target

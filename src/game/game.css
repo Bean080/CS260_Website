@@ -39,7 +39,7 @@ main#game {
     justify-content:space-evenly;
 
     position: absolute;
-    width: 25vw;
+    width: 60vw;
     height: 40vh;
     left: 50%;
     transform: translateX(-50%);
@@ -64,13 +64,13 @@ main#game {
 }
 
 
-#game .toast {
+#game .out {
     display: flex;
     align-items: center;
     align-self: center;
     overflow: hidden;
 
-    height: 100%;
+    height: 40vh;
     width: 100%;
 
     border: 2px solid beige;
@@ -79,8 +79,14 @@ main#game {
     color:rgb(84, 8, 50)
 }
 
+#game .confirmation {
+    
+}
+
 #game .photo {
-    object-fit: cover;
+    height: 38vh;
+    width: 40vw;
+    object-fit:cover;
 }
 
 #game .start_cam {
@@ -150,4 +156,3 @@ main#game {
     z-index: 9999;
     pointer-events: none;
 }
-

@@ -5,60 +5,67 @@ import {useNavigate} from 'react-router-dom';
 export function Lobby({user, lobby}) {
     const navigate = useNavigate();
     const [totalPlayers, setTotalPlayers] = React.useState(1);
+    const [currentlobby, setLobby] = React.useState(lobby)
 
     function play() {
         lobby.status = "playing";
+        setLobby[lobby]
+        console.log(lobby.status)
         navigate("/game");
     }
 
-    function joined(totalPlayers, threshold) {
-        if (totalPlayers >= threshold) {
+    function join() {
+        console.log(lobby.status)
+        if (lobby.status === "lobby") {
+            lobby.addPlayer()
+            setTotalPlayers(totalPlayers+1)
+        }
+    }
+
+    function joined(lobby, threshold) {
+        if (lobby.playerCount >= threshold) {
             return true;
         }
         return false;
-
-
-
     }
 
     function lobbyTest() {
-        console.log(lobby.host);
-        console.log(lobby.code);
-        setTotalPlayers(totalPlayers + 1);
-        console.log(totalPlayers);
+        console.log(lobby.playerCount);
+        join()
+        console.log(lobby.players);
     }
 
 
   return (
     <main id="lobby">
         <div className= "players">
-            {joined(totalPlayers, 2) && <div className="player"> 
-                <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player1 Name</b> 
+            {joined(lobby, 2) && <div className="player"> 
+                <img className= "photo" alt= "Player1" src="photo_placeholder.png"></img>
+                <b>Player2 - {lobby.getPlayer(2)}</b> 
             </div>}
-            {joined(totalPlayers, 3) && <div className="player"> 
+            {joined(lobby, 3) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player2 Name</b> 
+                <b>Player3 - {lobby.getPlayer(3)}</b> 
             </div>}
-            {joined(totalPlayers, 4) && <div className="player"> 
+            {joined(lobby, 4) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player3 Name</b> 
+                <b>Player4 - {lobby.getPlayer(4)}</b> 
             </div>}
-            {joined(totalPlayers, 5) && <div className="player"> 
+            {joined(lobby, 5) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player4 Name</b> 
+                <b>Player5 - {lobby.getPlayer(5)}</b> 
             </div>}
-            {joined(totalPlayers, 6) && <div className="player"> 
+            {joined(lobby, 6) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player5 Name</b> 
+                <b>Player6 - {lobby.getPlayer(6)}</b> 
             </div>}
-            {joined(totalPlayers, 7) && <div className="player"> 
+            {joined(lobby, 7) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player6 Name</b> 
+                <b>Player7 - {lobby.getPlayer(7)}</b> 
             </div>}
-            {joined(totalPlayers, 8) && <div className="player"> 
+            {joined(lobby, 8) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player7 Name</b> 
+                <b>Player8 - {lobby.getPlayer(8)}</b> 
             </div>}
             <div className="player">
                 <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>

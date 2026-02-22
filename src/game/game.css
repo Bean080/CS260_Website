@@ -5,7 +5,6 @@ src: url('fonts/Rye-Regular.ttf') format('truetype');
 
 [hidden] {
   display: none !important;
-  border: 2px solid black;
 }
 
 #code {
@@ -23,24 +22,28 @@ main#game {
   margin: 0 auto;
 }
 
-.dropdown {
-    text-align: center;
-}
-
-.dropdown-menu {
+#game .hide_dropdown {
     display: none !important;
-    background-color: beige;
-    border: 2px solid rgb(84, 8, 50);
-    border-radius: 10px;
-    box-shadow: 0 0 200px rgba(0,0,0,0.5);
-    min-width: 20 vw;
-    color: rgb(84, 8, 50);
-    text-align: center;
-    flex-direction: initial !important;
 }
 
-.dropdown-menu.show {
-    display: block !important; 
+#game .dropdown {
+    position: relative;
+}
+
+#game .dropdown_content {
+    position: absolute;
+    width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    border: 2px solid beige;
+    border-radius: 20px;
+    background-color:  beige;
+    color:rgb(84, 8, 50)
+}
+
+.dropdown:hover .dropdown-content {
+  display: block !important;
 }
 
 #game .target_picture {
@@ -49,10 +52,6 @@ main#game {
     object-fit: cover;
 }
 
-#game div {
-    display: flex;
-    flex-direction: column;
-}
 
 #game .camera {
     margin: 2vb;
@@ -78,16 +77,14 @@ main#game {
     box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
 }
 
-#game .foot {
+#game .toast {
     display: flex;
     align-items: center;
     align-self: center;
     overflow: hidden;
-    gap: 2%;
-    margin: 5vb;
 
-    height: 30%;
-    width: 80%;
+    height: 100%;
+    width: 100%;
 
     border: 2px solid beige;
     border-radius: 20px;
@@ -98,3 +95,26 @@ main#game {
 #game .photo {
     object-fit: cover;
 }
+
+#game .start_cam {
+    height:20vh;
+    aspect-ratio: 1/1;
+    display: flex;
+    font-size: clamp(1rem, 1.5vw, 4rem);
+
+    white-space: nowrap;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+#webcam {
+    max-height: 70vh;
+    width: 100%;
+    max-width: 70vw;
+
+    border-radius: 10px;
+    transform: scaleX(-1);
+}
+

@@ -1,8 +1,9 @@
 import React from "react";
 import "./account.css";
-
+import {useNavigate} from 'react-router-dom';
 
 export function Account({setGameCode, setUser, user, lobby}) {
+    const navigate = useNavigate();
     const [text, setText] = React.useState("")
 
     function login() {
@@ -11,6 +12,7 @@ export function Account({setGameCode, setUser, user, lobby}) {
         const code = localStorage.getItem("code");
         setGameCode(code || "####");
         lobby.host = text;
+        navigate("/");
     };
 
     function logout() {
@@ -41,6 +43,7 @@ export function Account({setGameCode, setUser, user, lobby}) {
         lobby.reset();
         lobby.host = user;
         lobby.code = document.getElementById("codeInput").value;
+        navigate("/");
     }
 
     function join() {
@@ -51,11 +54,11 @@ export function Account({setGameCode, setUser, user, lobby}) {
             lobby.reset();
             lobby.host = "Someone New!";
             lobby.code = code;
+            navigate("/");
         } else {
             lobby.reset();
             alert("Game code doesn't match existing games.")
         }
-        
     }
 
 

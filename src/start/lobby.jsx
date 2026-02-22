@@ -1,6 +1,6 @@
 import React from 'react';
 import './main.css';
-import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 export function Lobby({user, lobby}) {
     const navigate = useNavigate();

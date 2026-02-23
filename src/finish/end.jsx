@@ -2,7 +2,7 @@ import React from 'react';
 import './end.css';
 import { useNavigate } from 'react-router-dom';
 
-export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, players, host, status} ) {
+export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, players, host, status, playersOut, setOut} ) {
     const navigate = useNavigate();
 
     function end() {
@@ -12,6 +12,8 @@ export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, 
         setPlayerCount(1);
         setPlayers([user]);
         localStorage.removeItem("saved_players")
+        localStorage.removeItem("playersOut")
+        localStorage.removeItem("targetMemory")
         localStorage.removeItem("playerCount")
         navigate("/")
     }

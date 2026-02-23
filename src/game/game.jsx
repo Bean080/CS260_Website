@@ -1,30 +1,48 @@
 import React, { useRef, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import {LinkedList} from "./linkedList.js";
+import {LinkedList, shuffle} from "./linkedList.js";
 import './game.css';
 import { useNavigate } from 'react-router-dom';
 
 
-export function Game({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
-    const savedData = localStorage.getItem("saved_players");
-    const playersMemory = savedData ? JSON.parse(savedData) : [];
-    const [targetList, setTargetList] = React.useState([])
-
-    const game = React.useMemo(() => {
-        const gameCircle = new LinkedList();
-        gameCircle.createCircle(playersMemory);
-        return {
-            circle: gameCircle,
-            playersOut: []
-        };
-    }, [players]);
-
-    const [target, setTarget] = React.useState(game.circle.targetOf(user))
+export function Game({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status, playersOut, setOut}) {
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
+    const savedData = localStorage.getItem("saved_players");
+    const playersMemory = savedData ? JSON.parse(savedData) : [];
+    const [targetList, setTargetList] = React.useState([])
+    const [target, setTarget] = React.useState(localStorage.getItem("target") || null)
+
+    useEffect(() => {
+            if (target == user) end();
+    }, [target])
+
+    useEffect(() => {
+        const savedOrder = localStorage.getItem("targetMemory");
+        let currentOrder;
+
+        if (!savedOrder) {
+            const gameCircle = new LinkedList();
+            gameCircle.createCircle(players); 
+            currentOrder = gameCircle.toArray();
+            localStorage.setItem("targetMemory", JSON.stringify(currentOrder));
+        } else {
+            currentOrder = JSON.parse(savedOrder);
+        }
+
+        const circle = new LinkedList();
+        currentOrder.forEach(p => circle.add(p));
+        circle.tail.next = circle.head;
+        
+        const myTarget = circle.targetOf(user);
+        setTarget(myTarget);
+        localStorage.setItem("target", myTarget);
+    }, [user, players]);
 
     function end() {
+        localStorage.removeItem("targetMemory")
+        localStorage.removeItem("target")
         setStatus("ending");
         console.log(status)
         navigate("/end");
@@ -88,12 +106,13 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 minHeight: "40vh",
             },}
         );
+        takeOutPlayer(target)
     };
 
     function confirmOut(takenPhoto){
         toast.custom(
             <div className="confirmation">
-                <p></p>
+                <p>Is this {target}?</p>
             </div>,
             {style: {
                 background: 'beige',
@@ -104,8 +123,19 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
 
     };
 
-    function takeOutPlayer(player){
-
+    function takeOutPlayer(playerOut){
+        const orderData = JSON.parse(localStorage.getItem("targetMemory"));
+        const circle = new LinkedList();
+        orderData.forEach(p => circle.add(p));
+        circle.tail.next = circle.head;
+        circle.remove(playerOut);
+        const nextTarget = circle.targetOf(user);
+        
+        const newArray = circle.toArray();
+        localStorage.setItem("targetMemory", JSON.stringify(newArray));
+        localStorage.setItem("target", nextTarget);
+        setTarget(nextTarget);
+        setOut([...playersOut, playerOut]);
     }
 
     //target
@@ -118,8 +148,12 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     }
 
     function test() {
-        console.log(target)
-        console.log(game.circle.str())
+
+        //console.log(game.circle.str())
+        //console.log(targetList)
+        //console.log(targetMemory)
+        takeOutPlayer(target)
+        //console.log()
     }
 
     

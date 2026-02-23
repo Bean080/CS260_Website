@@ -43,8 +43,8 @@ export default function App() {
             
             <Routes>
                 <Route path='/' element={<Lobby user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
-                <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} />
-                <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} />
+                <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
+                <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>

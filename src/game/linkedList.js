@@ -100,4 +100,34 @@ export class LinkedList {
     }
     return string + (this.head ? this.head.value : "END");
   }
+
+  toArray() {
+    const result = [];
+    if (!this.head) return result;
+
+    let current = this.head;
+    let count = 0;
+
+    while (count < this.size) {
+        result.push(current.value);
+        current = current.next;
+        count++;
+    }
+
+    return result;
+}
+}
+
+
+export function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }

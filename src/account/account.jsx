@@ -46,7 +46,7 @@ export function Account({user, setCode, setUser, setHost,  }) {
         codeUpdate("codeInput");
         setHost(user);
         localStorage.setItem("host",user);
-        
+
         setCode(document.getElementById("codeInput").value);
         navigate("/");
     }

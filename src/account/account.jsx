@@ -12,10 +12,10 @@ export function Account({setGameCode, setUser, user, lobby}) {
         const code = localStorage.getItem("code");
         setGameCode(code || "####");
         lobby.host = text;
-        navigate("/");
     };
 
     function logout() {
+        localStorage.removeItem("code");
         localStorage.removeItem("user");
         localStorage.removeItem("lobby");
         setUser(null);
@@ -39,14 +39,25 @@ export function Account({setGameCode, setUser, user, lobby}) {
     };
 
     function host() {
+        if (!user) {
+            alert("Please sign in first");
+            return;
+        }
+        setUser(user)
         codeUpdate("codeInput");
         lobby.reset();
         lobby.host = user;
         lobby.code = document.getElementById("codeInput").value;
+        lobby.players.set(user,1);
+        console.log(lobby.players);
         navigate("/");
     }
 
     function join() {
+        if (!user) {
+            alert("Please sign in first");
+            return;
+        }
         const code = document.getElementById("codeInput").value;
         const servers = ["4545", "2004", "0002"];
         if (servers.includes(code)) {

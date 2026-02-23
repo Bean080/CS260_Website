@@ -13,7 +13,6 @@ import { Account } from './account/account.jsx';
 
 export default function App() {
   const players = new Map();
-  const testPlayers = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"];
   const myLobby = {
     host: "Host",
     code: "####",
@@ -21,21 +20,21 @@ export default function App() {
     mode: "Assassins",
     playerCount: 1,
     players: players,
-    testPlayers: testPlayers,
+    testPlayers: ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"],
 
     reset: function() {
       this.host = "Host",
       this.code = "####",
       this.status = "lobby",
-      this.players = players.clear()
+      this.players.clear()
     },
 
     addPlayer: function() {
       if (this.playerCount < 8) {
         let added = false;
         while (!added) {
-          const num = Math.floor(Math.random() * testPlayers.length);
-          let player = testPlayers[num];
+          const num = Math.floor(Math.random() * this.testPlayers.length);
+          let player = this.testPlayers[num];
           if (!this.players.has(player)) {
             this.playerCount = this.playerCount +1;
             players.set(player,this.playerCount);
@@ -54,7 +53,7 @@ export default function App() {
     },
 
     removePlayer: function(playerLeaving) {
-      players.delete(playerLeaving);
+      this.players.delete(playerLeaving);
       let playerNum = 2;
       const adjustedLobby = new Map()
       for (const player of players.keys()) {
@@ -64,7 +63,6 @@ export default function App() {
       this.players = adjustedLobby;
     },
   }
-  localStorage.setItem("lobby", myLobby)
 
   const [gameCode, setGameCode] = React.useState(localStorage.getItem("code")||"####");
   const [user, setUser] = React.useState(localStorage.getItem("user") || null);

@@ -30,6 +30,7 @@ export function Lobby({user, lobby}) {
     }
 
     function lobbyTest() {
+        console.log(lobby.host)
         console.log(lobby.playerCount);
         join()
         console.log(lobby.players);

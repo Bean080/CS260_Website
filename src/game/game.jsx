@@ -6,21 +6,17 @@ import { useNavigate } from 'react-router-dom';
 
 
 export function Game({ user, lobby }) {
-    const game = {
-        allPlayers: lobby.players,
+    const game = React.useMemo(() => {
+        const gameCircle = new LinkedList();
+        console.log(lobby.players)
+        gameCircle.createCircle(lobby.players);
+        return {
+            circle: gameCircle,
+            playersOut: new Map()
+        };
+    }, [lobby.players]);
 
-        createOrder: function() {
-            null
-        }
-        
-
-    }
-
-
-
-
-
-
+    const [target, setTarget] = React.useState(game.circle.targetOf(user))
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
@@ -105,6 +101,10 @@ export function Game({ user, lobby }) {
 
     };
 
+    function takeOutPlayer(player){
+
+    }
+
     //target
     function showTarget() {
         if (dropdown === "hide_dropdown") {
@@ -114,23 +114,25 @@ export function Game({ user, lobby }) {
         }
     }
 
+    function test() {
+        console.log(target)
+        console.log(game.circle.str())
+    }
 
     
 
     return (
         <main id='game'>
-            <div><Toaster position="center" toastOptions={{
-                className: '',
-                
-            }}/></div>
+            <div><Toaster position="center"/></div>
             <div className="dropdown">
+                <button onClick={() => test()}>Test</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>
 
                 <div className={`${dropdown} dropdown_content`}>
                     <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
-                    <h3>Target Name</h3>
+                    <h3>{target}</h3>
                 </div>
             </div>
 

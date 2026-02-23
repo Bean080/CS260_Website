@@ -67,24 +67,37 @@ export class LinkedList {
     while (count < this.size) {
         if (current.value === item) {
             found(current);
-            return;
+            return current.value;
         }
         current = current.next;
         count++;
     }
   }
 
-  find(value) {
+  targetOf(value) {
     if (!this.head) return null;
     let current = this.head;
     let count = 0;
     while (count < this.size) {
         if (current.value === value) {
-            return current;
+            return current.next.value;
         }
         current = current.next;
         count++;
     }
     return null;
-}
+  }
+
+  str() {
+    let count = 0;
+    let string = "";
+    let current = this.head
+    while (count < this.size) {
+        string += current.value;
+        string += " => ";
+        current = current.next;
+        count++;
+    }
+  return string;
+  }
 }

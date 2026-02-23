@@ -26,14 +26,14 @@ export class LinkedList {
     this.size++;
   }
 
-   createCircle(map) {
-    const players = Array.from(map.keys());
+  createCircle(playerArray) {
+    const players = [...playerArray]; 
     for (let i = players.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [players[i], players[j]] = [players[j], players[i]];
     }
-    players.forEach(player => this.add(player));
 
+    players.forEach(player => this.add(player));
     if (this.head && this.tail) {
         this.tail.next = this.head;
         this.head.prev = this.tail;
@@ -80,24 +80,24 @@ export class LinkedList {
     let count = 0;
     while (count < this.size) {
         if (current.value === value) {
-            return current.next.value;
+            return current.next ? current.next.value : null;
         }
         current = current.next;
         count++;
     }
-    return null;
+    return "waaa";
   }
 
   str() {
     let count = 0;
     let string = "";
-    let current = this.head
+    let current = this.head;
     while (count < this.size) {
         string += current.value;
         string += " => ";
         current = current.next;
         count++;
     }
-  return string;
+    return string + (this.head ? this.head.value : "END");
   }
 }

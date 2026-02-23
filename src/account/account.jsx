@@ -2,7 +2,7 @@ import React from "react";
 import "./account.css";
 import {useNavigate} from 'react-router-dom';
 
-export function Account({setGameCode, setUser, user, lobby}) {
+export function Account({user, setCode, setUser, setHost,  }) {
     const navigate = useNavigate();
     const [text, setText] = React.useState("")
 
@@ -10,17 +10,16 @@ export function Account({setGameCode, setUser, user, lobby}) {
         localStorage.setItem("user", text);
         setUser(text);
         const code = localStorage.getItem("code");
-        setGameCode(code || "####");
-        lobby.host = text;
+        setCode(code || "####");
+        setHost(user)
     };
 
     function logout() {
         localStorage.removeItem("code");
         localStorage.removeItem("user");
-        localStorage.removeItem("lobby");
+        localStorage.removeItem("host");
         setUser(null);
-        setGameCode("####");
-        lobby.reset();
+        setCode("####");
     };
 
     function textChange(e) {
@@ -30,7 +29,7 @@ export function Account({setGameCode, setUser, user, lobby}) {
     function codeUpdate(id) {
         const code = document.getElementById(id).value;
         if (code.length === 4) {
-            setGameCode(code || "####");
+            setCode(code || "####");
             localStorage.setItem("code", code);
         } else {
             alert("Code must be 4 numbers")
@@ -45,11 +44,10 @@ export function Account({setGameCode, setUser, user, lobby}) {
         }
         setUser(user)
         codeUpdate("codeInput");
-        lobby.reset();
-        lobby.host = user;
-        lobby.code = document.getElementById("codeInput").value;
-        lobby.players.set(user,1);
-        console.log(lobby.players);
+        setHost(user);
+        localStorage.setItem("host",user);
+        
+        setCode(document.getElementById("codeInput").value);
         navigate("/");
     }
 
@@ -62,12 +60,11 @@ export function Account({setGameCode, setUser, user, lobby}) {
         const servers = ["4545", "2004", "0002"];
         if (servers.includes(code)) {
             codeUpdate("codeInput");
-            lobby.reset();
-            lobby.host = "Someone New!";
-            lobby.code = code;
+            setHost("Someone New!");
+            localStorage.setItem("host","Someone New!");
+            lsetCode(code);
             navigate("/");
         } else {
-            lobby.reset();
             alert("Game code doesn't match existing games.")
         }
     }

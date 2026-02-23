@@ -1,15 +1,18 @@
 import React from 'react';
 import './end.css';
-import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export function End( {user, lobby}) {
+export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, players, host, status} ) {
     const navigate = useNavigate();
-    const [currentlobby, setLobby] = React.useState(lobby)
 
     function end() {
-        lobby.status = "lobby"
-        setLobby[lobby]
-        console.log(lobby.status)
+        setStatus("lobby")
+        console.log("lobby");
+
+        setPlayerCount(1);
+        setPlayers([user]);
+        localStorage.removeItem("saved_players")
+        localStorage.removeItem("playerCount")
         navigate("/")
     }
 

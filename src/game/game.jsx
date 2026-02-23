@@ -5,16 +5,19 @@ import './game.css';
 import { useNavigate } from 'react-router-dom';
 
 
-export function Game({ user, lobby }) {
+export function Game({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
+    const savedData = localStorage.getItem("saved_players");
+    const playersMemory = savedData ? JSON.parse(savedData) : [];
+    const [targetList, setTargetList] = React.useState([])
+
     const game = React.useMemo(() => {
         const gameCircle = new LinkedList();
-        console.log(lobby.players)
-        gameCircle.createCircle(lobby.players);
+        gameCircle.createCircle(playersMemory);
         return {
             circle: gameCircle,
-            playersOut: new Map()
+            playersOut: []
         };
-    }, [lobby.players]);
+    }, [players]);
 
     const [target, setTarget] = React.useState(game.circle.targetOf(user))
     const [cameraOn, setCamera] = React.useState(false);
@@ -22,8 +25,8 @@ export function Game({ user, lobby }) {
     const navigate = useNavigate();
 
     function end() {
-        lobby.status = "ending";
-        console.log(lobby.status)
+        setStatus("ending");
+        console.log(status)
         navigate("/end");
     }
 

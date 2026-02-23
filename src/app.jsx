@@ -12,61 +12,15 @@ import { Account } from './account/account.jsx';
 
 
 export default function App() {
-  const players = new Map();
-  const myLobby = {
-    host: "Host",
-    code: "####",
-    status: "lobby",
-    mode: "Assassins",
-    playerCount: 1,
-    players: players,
-    testPlayers: ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"],
-
-    reset: function() {
-      this.host = "Host",
-      this.code = "####",
-      this.status = "lobby",
-      this.players.clear()
-    },
-
-    addPlayer: function() {
-      if (this.playerCount < 8) {
-        let added = false;
-        while (!added) {
-          const num = Math.floor(Math.random() * this.testPlayers.length);
-          let player = this.testPlayers[num];
-          if (!this.players.has(player)) {
-            this.playerCount = this.playerCount +1;
-            players.set(player,this.playerCount);
-            added = true;
-          }
-        }
-      }
-    },
-
-    getPlayer: function(num) {
-      for (const player of this.players.keys()) {
-        if (this.players.get(player) === num) {
-          return player;
-        }
-      }
-    },
-
-    removePlayer: function(playerLeaving) {
-      this.players.delete(playerLeaving);
-      let playerNum = 2;
-      const adjustedLobby = new Map()
-      for (const player of players.keys()) {
-        adjustedLobby.set(player,playerNum);
-        playerNum +=1;
-      }
-      this.players = adjustedLobby;
-    },
-  }
-
-  const [gameCode, setGameCode] = React.useState(localStorage.getItem("code")||"####");
+  const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
   const [user, setUser] = React.useState(localStorage.getItem("user") || null);
-  const [lobby, setLobby] = React.useState(myLobby)
+  const [ host, setHost ] = React.useState("Host");
+  const [ players, setPlayers ] = React.useState(user ? [user] : [host]);
+  const [ status, setStatus] = React.useState("lobby");
+  const [ playerCount, setPlayerCount ] = React.useState(1);
+  const [ playersOut, setOut] = React.useState([]);
+  
+
   
   return (
     <BrowserRouter>
@@ -88,10 +42,10 @@ export default function App() {
           <h5 id="code">Game Code: {gameCode}</h5>
             
             <Routes>
-                <Route path='/' element={<Lobby user={user} lobby={lobby}/>} exact />
-                <Route path='/game' element={<Game user={user} lobby={lobby}/>} />
-                <Route path='/end' element={<End user={user} lobby={lobby}/>} />
-                <Route path='/account' element={<Account setGameCode={setGameCode} setUser={setUser} user={user} lobby={lobby}/>} />
+                <Route path='/' element={<Lobby user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
+                <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} />
+                <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} />
+                <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 

@@ -2,71 +2,95 @@ import React from 'react';
 import './main.css';
 import {useNavigate} from 'react-router-dom';
 
-export function Lobby({user, lobby}) {
+export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
     const navigate = useNavigate();
-    const [totalPlayers, setTotalPlayers] = React.useState(1);
-    const [currentlobby, setLobby] = React.useState(lobby)
+    const testPlayers = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"]
+    const savedData = localStorage.getItem("saved_players");
+    const playersMemory = savedData ? JSON.parse(savedData) : [];
 
     function play() {
-        lobby.status = "playing";
-        setLobby[lobby]
-        console.log(lobby.status)
+        setStatus("playing");
+        console.log(status);
         navigate("/game");
     }
 
     function join() {
-        console.log(lobby.status)
-        if (lobby.status === "lobby") {
-            lobby.addPlayer()
-            setTotalPlayers(totalPlayers+1)
+        console.log(status)
+        console.log(playerCount)
+
+        if (status === "lobby") {
+            if (playerCount < 8) {
+                let added = false;
+            while (!added) {
+                const num = Math.floor(Math.random() * testPlayers.length);
+                let player = testPlayers[num];
+                if (!playersMemory.includes(player)) {
+                    setPlayerCount(playerCount+1)
+                    localStorage.setItem("playerCount", playerCount);
+                    players.push(player)
+                    localStorage.setItem("saved_players", JSON.stringify(players));
+                    setPlayers(players)
+                    added = true;
+                }
+            }
+            }
         }
     }
 
-    function joined(lobby, threshold) {
-        if (lobby.playerCount >= threshold) {
+    function joined(threshold) {
+        if (playerCount >= threshold) {
             return true;
         }
         return false;
     }
 
     function lobbyTest() {
-        console.log(lobby.host)
-        console.log(lobby.playerCount);
+        console.log(host)
+        console.log(playerCount);
         join()
-        console.log(lobby.players);
+        console.log(playersMemory);
+    }
+
+    function removePlayer(playerLeaving) {
+        const index = playersMemory.indexOf(playerLeaving);
+        if (index > -1) {
+            playersMemory.splice(index, 1);
+            localStorage.setItem("saved_players", JSON.stringify(playersMemory));
+        }
+        console.log(playersMemory)
     }
 
 
   return (
     <main id="lobby">
         <div className= "players">
-            {joined(lobby, 2) && <div className="player"> 
+            {joined(2) && <div className="player"> 
                 <img className= "photo" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player2 - {lobby.getPlayer(2)}</b> 
+                <b>Player2 - {playersMemory[1]}</b> 
             </div>}
-            {joined(lobby, 3) && <div className="player"> 
+            {joined(3) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player3 - {lobby.getPlayer(3)}</b> 
+                <b>Player3 - {playersMemory[2]}</b> 
             </div>}
-            {joined(lobby, 4) && <div className="player"> 
+            {joined(4) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player4 - {lobby.getPlayer(4)}</b> 
+                <b>Player4 - {playersMemory[3]}</b> 
             </div>}
-            {joined(lobby, 5) && <div className="player"> 
+            {joined(5) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player5 - {lobby.getPlayer(5)}</b> 
+                <b>Player5 - {playersMemory[4]}</b> 
             </div>}
-            {joined(lobby, 6) && <div className="player"> 
+            {joined(6) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player6 - {lobby.getPlayer(6)}</b> 
+                <b>Player6 - {playersMemory[5]}</b> 
             </div>}
-            {joined(lobby, 7) && <div className="player"> 
+            {joined(7) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player7 - {lobby.getPlayer(7)}</b> 
+                <b>Player7 - {playersMemory[6]}</b> 
             </div>}
-            {joined(lobby, 8) && <div className="player"> 
+            {joined(8) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player8 - {lobby.getPlayer(8)}</b> 
+                <b>Player8 - {playersMemory[7]}</b> 
             </div>}
             <div className="player">
                 <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>

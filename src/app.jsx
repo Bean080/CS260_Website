@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { useLocation, BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { Lobby } from './start/lobby.jsx';
 import { Game } from './game/game.jsx';
 import { End } from './finish/end.jsx';
@@ -13,7 +13,6 @@ import { Account } from './account/account.jsx';
 
 
 export default function App() {
-
   class User {
     constructor(name, password, lastCode){
     this.name = name;
@@ -26,10 +25,11 @@ export default function App() {
   const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
   const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User('','','####'));
   const [ host, setHost ] = React.useState("Host");
-  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || [user.name]);
+  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || user.name? [user.name]:[]);
   const [ status, setStatus] = React.useState("lobby");
-  const [ playerCount, setPlayerCount ] = React.useState(localStorage.getItem("playerCount") || 1);
+  const [ playerCount, setPlayerCount ] = React.useState(Number(localStorage.getItem("playerCount")) || 1);
   const [ playersOut, setOut] = React.useState(JSON.parse(localStorage.getItem("out")) || []);
+  const [ pause, setPause] = React.useState(false);
   
   useEffect(() => {
     localStorage.setItem("saved_players", JSON.stringify(players));
@@ -48,12 +48,12 @@ export default function App() {
             <nav className="navbar fixed-top navbar-dark">
               <h1>Photogenic {user.name && "-"} {user.name}</h1>
               <menu className="navbar-nav">
-                <li className="nav-item">
-                  <NavLink className='nav-link styled_button' to=''>Home</NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink className='nav-link styled_button' to='account'>Account</NavLink>
-                </li>
+                {pause && <li className="nav-item">
+                  <NavLink className='nav-link styled_button' to='' onClick={() => setPause(false)}>Home</NavLink>
+                </li>}
+                {!pause && <li className="nav-item">
+                  <NavLink className='nav-link styled_button' to='account' onClick={() => setPause(true)}>Account</NavLink>
+                </li>}
               </menu>
             </nav>
           </header>

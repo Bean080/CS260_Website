@@ -22,7 +22,7 @@ export function Lobby({user , setUser , setStatus , setPlayerCount , setPlayers 
                     const num = Math.floor(Math.random() * testPlayers.length);
                     let player = testPlayers[num];
                     if (!playersMemory.includes(player)) {
-                        const nextCount = parseInt(playerCount)+1;
+                        const nextCount = playerCount+1;
                         const nextPlayers = [...players, player];
 
                         setPlayerCount(nextCount)

@@ -26,6 +26,13 @@ src: url('../../fonts/Rye-Regular.ttf') format('truetype');
   padding: 5px 10px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(15, 2, 9, 0.9);
+  transition: 0.3s;
+}
+
+.styled_button:hover {
+  color: beige;
+  background-color: rgb(84, 8, 50);
+  box-shadow: 0 0 10px rgba(15, 2, 9, 0.9) inset;
 }
 
 .vignette {

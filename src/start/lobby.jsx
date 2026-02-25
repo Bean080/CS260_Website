@@ -1,14 +1,23 @@
 import React from 'react';
 import './main.css';
 import {useNavigate} from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
-export function Lobby({user , setUser , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
+export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
     const navigate = useNavigate();
     const testPlayers = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"]
     const savedData = localStorage.getItem("saved_players");
     const playersMemory = savedData ? JSON.parse(savedData) : [];
 
     function play() {
+        if (playerCount < 2) {
+            toast.error("You need at least 2 people to play")
+            return
+        } else if (localStorage.getItem("code") === "####") {
+            toast.error("Invalid Code")
+            return
+        }
+
         setStatus("playing");
         console.log(status);
         navigate("/game");
@@ -87,6 +96,7 @@ export function Lobby({user , setUser , setStatus , setPlayerCount , setPlayers 
 
   return (
     <main id="lobby">
+        <div><Toaster/></div>
         <div className= "players">
             {joined(2) && <div className="player"> 
                 <img className= "photo" alt= "Player1" src="photo_placeholder.png"></img>

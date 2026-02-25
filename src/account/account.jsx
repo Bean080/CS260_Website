@@ -3,7 +3,7 @@ import "./account.css";
 import {useNavigate} from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
-export function Account({user, setCode, setUser, setHost,  }) {
+export function Account({user, setCode, setUser, setHost, setPlayers }) {
     const navigate = useNavigate();
     const [userText, setUserText] = React.useState("")
     const [passwordText, setPassText] = React.useState("")
@@ -37,10 +37,14 @@ export function Account({user, setCode, setUser, setHost,  }) {
         console.log(usersMemory);
         for (const account of usersMemory) {
             if (account.name == userText && account.password == passwordText){
-                console.log(account);
+
                 localStorage.setItem("user", JSON.stringify(account));
                 setUser(account)
+                setLobby([user.name])
                 toast.success('Signed in')
+
+                setCode("####")
+                localStorage.setItem("code", "####")
                 return;
             }
         }
@@ -64,10 +68,14 @@ export function Account({user, setCode, setUser, setHost,  }) {
         localStorage.setItem("user", JSON.stringify(account));
         setUser(account);
         setHost(account.name);
+        
         usersMemory.push(account);
         localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
         toast.success('Created new user');
         console.log("Created Account");
+
+        setCode("####")
+        localStorage.setItem("code", "####")
     }
 
     function logout() {
@@ -87,7 +95,8 @@ export function Account({user, setCode, setUser, setHost,  }) {
         setPassText(e.target.value);
     }
 
-    function codeUpdate(id) {
+    function codeUpdate() {
+        const id = "codeInput"
         const code = document.getElementById(id).value;
         if (code.length === 4) {
 
@@ -112,7 +121,7 @@ export function Account({user, setCode, setUser, setHost,  }) {
             toast.error("Please sign in first");
             return;
         }
-        codeUpdate("codeInput");
+        codeUpdate();
         setHost(user.name);
         localStorage.setItem("host",user.name);
 
@@ -128,7 +137,7 @@ export function Account({user, setCode, setUser, setHost,  }) {
         const code = document.getElementById("codeInput").value;
         const servers = ["4545", "2004", "0002"];
         if (servers.includes(code)) {
-            codeUpdate("codeInput");
+            codeUpdate();
             setHost("Someone New!");
             localStorage.setItem("host","Someone New!");
             setCode(code);

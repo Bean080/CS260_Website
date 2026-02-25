@@ -25,7 +25,7 @@ export default function App() {
   const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
   const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User('','','####'));
   const [ host, setHost ] = React.useState("Host");
-  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || user.name? [user.name]:[]);
+  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || []);
   const [ status, setStatus] = React.useState("lobby");
   const [ playerCount, setPlayerCount ] = React.useState(Number(localStorage.getItem("playerCount")) || 1);
   const [ playersOut, setOut] = React.useState(JSON.parse(localStorage.getItem("out")) || []);
@@ -60,10 +60,10 @@ export default function App() {
           <h5 id="code">Game Code: {gameCode}</h5>
             
             <Routes>
-                <Route path='/' element={<Lobby user={user} setUser={setUser} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
+                <Route path='/' element={<Lobby user={user} gameCode={gameCode} setUser={setUser} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
                 <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
-                <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} />} />
+                <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} setPlayers={setPlayers}/>} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 

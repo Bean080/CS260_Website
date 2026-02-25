@@ -1,0 +1,38 @@
+
+list = []
+
+for (i = 0 ; i < list.length-1 ; i++) {
+    auto fill = list[i]
+    for (j=i+1 ; j <list.length; j++) {
+        if (list[j] > fill) {
+            fill = list[j]
+        }
+        swap(list[i], fill);
+    }
+}
+
+
+do {
+   bool didSwap = false;
+   for(i=0;i<list.length;i++){
+        if (list[i] > list[i+1]) {
+            auto temp = list[i];
+            list[i] = list[i+1]
+            list[i+1] = temp;
+            didSwap = true;
+        }
+
+   }
+} while (didSwap);
+
+
+list = [8, 5, 2, 7, 3]
+for (i=1 ; i < list.length; i++){
+    auto copy = list[i];
+    int j=i;
+    while (j > 0 && list[j-1] > copy) {
+        list[j] = list[j-1]
+        j--;
+    }
+    list[j] = copy;
+}

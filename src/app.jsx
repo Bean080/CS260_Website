@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import './app.css';
@@ -9,17 +9,35 @@ import { Game } from './game/game.jsx';
 import { End } from './finish/end.jsx';
 import { Account } from './account/account.jsx';
 
+//localStorage.clear()           //   <-----------------            REMOVE AFTER TESTING
 
 
 export default function App() {
+
+  class User {
+    constructor(name, password, lastCode){
+    this.name = name;
+    this.password = password;
+    this.lastCode = lastCode;
+    this.profilePhoto = "";
+    }
+  };
+
   const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
-  const [user, setUser] = React.useState(localStorage.getItem("user") || null);
+  const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User('','','####'));
   const [ host, setHost ] = React.useState("Host");
-  const [ players, setPlayers ] = React.useState(user ? [user] : [host]);
+  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || [user.name]);
   const [ status, setStatus] = React.useState("lobby");
-  const [ playerCount, setPlayerCount ] = React.useState(1);
-  const [ playersOut, setOut] = React.useState([]);
+  const [ playerCount, setPlayerCount ] = React.useState(localStorage.getItem("playerCount") || 1);
+  const [ playersOut, setOut] = React.useState(JSON.parse(localStorage.getItem("out")) || []);
   
+  useEffect(() => {
+    localStorage.setItem("saved_players", JSON.stringify(players));
+  },[players]);
+
+  useEffect(() => {
+    localStorage.setItem("out", JSON.stringify(playersOut));
+  },[playersOut]);
 
   
   return (
@@ -28,7 +46,7 @@ export default function App() {
         <div className="vignette"></div>
           <header>
             <nav className="navbar fixed-top navbar-dark">
-              <h1>Photogenic {user && "-"} {user}</h1>
+              <h1>Photogenic {user.name && "-"} {user.name}</h1>
               <menu className="navbar-nav">
                 <li className="nav-item">
                   <NavLink className='nav-link styled_button' to=''>Home</NavLink>

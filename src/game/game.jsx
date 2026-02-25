@@ -9,14 +9,8 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
-    const savedData = localStorage.getItem("saved_players");
-    const playersMemory = savedData ? JSON.parse(savedData) : [];
     const [targetList, setTargetList] = React.useState([])
     const [target, setTarget] = React.useState(localStorage.getItem("target") || null)
-
-    useEffect(() => {
-            if (target == user) end();
-    }, [target])
 
     useEffect(() => {
         const savedOrder = localStorage.getItem("targetMemory");
@@ -35,7 +29,8 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
         currentOrder.forEach(p => circle.add(p));
         circle.tail.next = circle.head;
         
-        const myTarget = circle.targetOf(user);
+        console.log(user)
+        const myTarget = circle.targetOf(user.name);
         setTarget(myTarget);
         localStorage.setItem("target", myTarget);
     }, [user, players]);
@@ -86,7 +81,6 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageData = canvas.toDataURL('image/png');
-            localStorage.setItem("photo", imageData);
             setImage(imageData);
             confirmOut(imageData);
             out(imageData);
@@ -106,7 +100,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 minHeight: "40vh",
             },}
         );
-        takeOutPlayer(target)
+        takeOutPlayer(target, takenPhoto)
     };
 
     function confirmOut(takenPhoto){
@@ -123,19 +117,22 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
 
     };
 
-    function takeOutPlayer(playerOut){
+    function takeOutPlayer(playerOut, photo){
         const orderData = JSON.parse(localStorage.getItem("targetMemory"));
         const circle = new LinkedList();
         orderData.forEach(p => circle.add(p));
         circle.tail.next = circle.head;
         circle.remove(playerOut);
-        const nextTarget = circle.targetOf(user);
+        console.log(user)
+        const nextTarget = circle.targetOf(user.name);
         
         const newArray = circle.toArray();
         localStorage.setItem("targetMemory", JSON.stringify(newArray));
         localStorage.setItem("target", nextTarget);
         setTarget(nextTarget);
-        setOut([...playersOut, playerOut]);
+        const pair = [playerOut, photo]
+        setOut([...playersOut, pair]);
+        localStorage.setItem("out", JSON.stringify(playersOut));
     }
 
     //target
@@ -148,28 +145,26 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     }
 
     function test() {
-
-        //console.log(game.circle.str())
-        //console.log(targetList)
-        //console.log(targetMemory)
-        takeOutPlayer(target)
-        //console.log()
+        const photo = "camera_placeholder.jpg"
+        takeOutPlayer(target, photo);
     }
 
-    
+    useEffect(() => {
+            if (target == user.name && playersOut.length == playerCount-1) end();
+    }, [target])
 
     return (
         <main id='game'>
             <div><Toaster position="center"/></div>
             <div className="dropdown">
-                <button onClick={() => test()}>Test</button>
+                <button className="styled_button" onClick={() => test()}>Test</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>
 
                 <div className={`${dropdown} dropdown_content`}>
                     <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
-                    <h3>{target}</h3>
+                    <h3>{target != user ? target : null}</h3>
                 </div>
             </div>
 

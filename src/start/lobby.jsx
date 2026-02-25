@@ -15,24 +15,24 @@ export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCo
     }
 
     function join() {
-        console.log(status)
-        console.log(playerCount)
-
         if (status === "lobby") {
             if (playerCount < 8) {
                 let added = false;
-            while (!added) {
-                const num = Math.floor(Math.random() * testPlayers.length);
-                let player = testPlayers[num];
-                if (!playersMemory.includes(player)) {
-                    setPlayerCount(playerCount+1)
-                    localStorage.setItem("playerCount", playerCount);
-                    players.push(player)
-                    localStorage.setItem("saved_players", JSON.stringify(players));
-                    setPlayers(players)
-                    added = true;
+                while (!added) {
+                    const num = Math.floor(Math.random() * testPlayers.length);
+                    let player = testPlayers[num];
+                    if (!playersMemory.includes(player)) {
+                        const nextCount = parseInt(playerCount)+1;
+                        const nextPlayers = [...players, player];
+
+                        setPlayerCount(nextCount)
+                        setPlayers(nextPlayers)
+
+                        localStorage.setItem("playerCount", nextCount);
+                        
+                        added = true;
+                    }
                 }
-            }
             }
         }
     }
@@ -45,10 +45,9 @@ export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCo
     }
 
     function lobbyTest() {
-        console.log(host)
         console.log(playerCount);
         join()
-        console.log(playersMemory);
+        console.log(playerCount);
     }
 
     function removePlayer(playerLeaving) {
@@ -61,46 +60,51 @@ export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCo
     }
 
 
+
+
+
+
+
   return (
     <main id="lobby">
         <div className= "players">
             {joined(2) && <div className="player"> 
                 <img className= "photo" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player2 - {playersMemory[1]}</b> 
+                <b>Player2 - {players[1]}</b> 
             </div>}
             {joined(3) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player3 - {playersMemory[2]}</b> 
+                <b>Player3 - {players[2]}</b> 
             </div>}
             {joined(4) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player4 - {playersMemory[3]}</b> 
+                <b>Player4 - {players[3]}</b> 
             </div>}
             {joined(5) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player5 - {playersMemory[4]}</b> 
+                <b>Player5 - {players[4]}</b> 
             </div>}
             {joined(6) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player6 - {playersMemory[5]}</b> 
+                <b>Player6 - {players[5]}</b> 
             </div>}
             {joined(7) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player7 - {playersMemory[6]}</b> 
+                <b>Player7 - {players[6]}</b> 
             </div>}
             {joined(8) && <div className="player"> 
                 <img className= "photo" width= "80px" alt= "Player1" src="photo_placeholder.png"></img>
-                <b>Player8 - {playersMemory[7]}</b> 
+                <b>Player8 - {players[7]}</b> 
             </div>}
             <div className="player">
                 <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>
-                <b>(YOU) {user}</b> 
-                <label htmlFor="file-upload" className="file_upload">Upload Photo</label>
-                <input id="file-upload" type="file"></input>
+                <b>(YOU) {user.name}</b> 
+                <label htmlFor="file-upload" className="file_upload" >Upload Photo</label>
+                <input id="file-upload" type="file" accept="image/*"></input>
             </div>
         </div>
         <div>
-            {user && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
+            {user.name && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
         </div>
         <button className="styled_button test" onClick={() => lobbyTest()}>Add Player (test)</button>
         <div hidden className="foot">

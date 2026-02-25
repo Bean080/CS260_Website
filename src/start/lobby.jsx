@@ -2,7 +2,7 @@ import React from 'react';
 import './main.css';
 import {useNavigate} from 'react-router-dom';
 
-export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
+export function Lobby({user , setUser , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status}) {
     const navigate = useNavigate();
     const testPlayers = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin", "Mary"]
     const savedData = localStorage.getItem("saved_players");
@@ -59,10 +59,30 @@ export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCo
         console.log(playersMemory)
     }
 
+    function photoUpload(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
 
+            reader.onload = (event) => {
+                const fileData = event.target.result;
+                console.log(fileData);
 
+                const newUser = { ...user, photo: fileData };
+                setUser(newUser);
+                localStorage.setItem("user", JSON.stringify(newUser));
+            };
 
+            reader.readAsDataURL(file);
+        }
+    }
 
+    function profilePhoto(photo) {
+        if (!photo) {
+            return "photo_placeholder.png"
+        }
+        return photo;
+    }
 
 
   return (
@@ -97,10 +117,10 @@ export function Lobby({user , setStatus , setPlayerCount , setPlayers , playerCo
                 <b>Player8 - {players[7]}</b> 
             </div>}
             <div className="player">
-                <img className= "photo" width= "80px" alt= "Host"src="photo_placeholder.png"></img>
+                <img className= "photo" alt= "Host" src={profilePhoto(user.photo)}></img>
                 <b>(YOU) {user.name}</b> 
                 <label htmlFor="file-upload" className="file_upload" >Upload Photo</label>
-                <input id="file-upload" type="file" accept="image/*"></input>
+                <input id="file-upload" type="file" accept="image/*" onChange={photoUpload}></input>
             </div>
         </div>
         <div>

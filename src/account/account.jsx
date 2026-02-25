@@ -13,7 +13,7 @@ export function Account({user, setCode, setUser, setHost,  }) {
         this.name = name;
         this.password = password;
         this.lastCode = lastCode;
-        this.profilePhoto = "";
+        this.photo = "";
         }
     };
 

@@ -19,7 +19,7 @@ export default function App() {
     this.name = name;
     this.password = password;
     this.lastCode = lastCode;
-    this.profilePhoto = "";
+    this.photo = "";
     }
   };
 
@@ -60,7 +60,7 @@ export default function App() {
           <h5 id="code">Game Code: {gameCode}</h5>
             
             <Routes>
-                <Route path='/' element={<Lobby user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
+                <Route path='/' element={<Lobby user={user} setUser={setUser} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
                 <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} />} />

@@ -9,7 +9,6 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
-    const [targetList, setTargetList] = React.useState([])
     const [target, setTarget] = React.useState(localStorage.getItem("target") || null)
 
     useEffect(() => {
@@ -69,7 +68,6 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     // photos
     const canvasRef = useRef(null);
     const [image, setImage] = React.useState(null);
-    const [flash, setFlash] = React.useState(false);
     function takePhoto() {
         const video = videoRef.current;
         const canvas = canvasRef.current;
@@ -82,40 +80,62 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
 
             const imageData = canvas.toDataURL('image/png');
             setImage(imageData);
-            confirmOut(imageData);
             out(imageData);
         }
     }
 
     //notifications
-    function out(takenPhoto){
-        toast.custom(
-            <div className="out">
-                <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
-                <h3>Recent Player Out</h3>
-            </div>,
-            {style: {
-                background: 'transparent',
-                minWidth: "90vw",
-                minHeight: "40vh",
-            },}
-        );
-        takeOutPlayer(target, takenPhoto)
+    async function out(takenPhoto){
+        const response = await confirmOut(takenPhoto);
+
+        if (response) {
+            toast.custom(
+                <div className="out">
+                    <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
+                    <h3 className="out_text">{target} is Out!</h3>
+                </div>,
+                {style: {
+                    background: 'transparent',
+                    minWidth: "90vw",
+                    minHeight: "40vh",
+                }}
+            );
+            takeOutPlayer(target, takenPhoto);
+        } else {
+            toast.custom(
+                <div className="out">
+                    <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
+                    <h3>{user.name} is a LIAR!</h3>
+                </div>,
+                {style: {
+                    background: 'transparent',
+                    minWidth: "90vw",
+                    minHeight: "40vh",
+                }}
+            )
+        }
     };
 
-    function confirmOut(takenPhoto){
-        toast.custom(
-            <div className="confirmation">
-                <p>Is this {target}?</p>
-            </div>,
-            {style: {
-                background: 'beige',
-                minWidth: "90vw",
-                minHeight: "90vh",
-            },}
-        );
-
+    function confirmOut(takenPhoto) {
+        return new Promise((resolve) => (
+            toast.custom(
+                <div className="confirmation">
+                    <img className="confirm_photo" src={takenPhoto}></img>
+                    <p>Is this {target}?</p>
+                    <div className="confirm_buttons">
+                        <button className="styled_button" onClick={() => {
+                            toast.remove();
+                            resolve(true);
+                        }}>Yes!</button>
+                        <button className="styled_button" onClick={() => {
+                            toast.remove();
+                            resolve(false)
+                        }}>No...</button>
+                    </div>
+                </div>, {duration: Infinity})
+        ))
     };
+
 
     function takeOutPlayer(playerOut, photo){
         const orderData = JSON.parse(localStorage.getItem("targetMemory"));
@@ -157,7 +177,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
         <main id='game'>
             <div><Toaster position="center"/></div>
             <div className="dropdown">
-                <button className="styled_button" onClick={() => test()}>Test</button>
+                <button className="styled_button" onClick={() => test()}>Remove Player</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>
@@ -169,7 +189,6 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
             </div>
 
             <div>
-                {flash && <div className="flash_effect"></div>}
                 <canvas hidden ref={canvasRef} width="640" height="480"></canvas>
                 <div className="camera">
                     {cameraOn && <video id="webcam" ref={videoRef} autoPlay playsInline></video>}

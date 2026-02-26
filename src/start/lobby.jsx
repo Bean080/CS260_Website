@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './main.css';
 import {useNavigate} from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
@@ -24,13 +24,12 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
     }
 
     function join() {
-        if (status === "lobby") {
             if (playerCount < 8) {
                 let added = false;
                 while (!added) {
                     const num = Math.floor(Math.random() * testPlayers.length);
                     let player = testPlayers[num];
-                    if (!playersMemory.includes(player)) {
+                    if (!players.includes(player)) {
                         const nextCount = playerCount+1;
                         const nextPlayers = [...players, player];
 
@@ -38,13 +37,11 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
                         setPlayers(nextPlayers)
 
                         localStorage.setItem("playerCount", nextCount);
-                        
                         added = true;
                     }
                 }
             }
         }
-    }
 
     function joined(threshold) {
         if (playerCount >= threshold) {
@@ -53,19 +50,16 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
         return false;
     }
 
-    function lobbyTest() {
-        console.log(playerCount);
-        join()
-        console.log(playerCount);
-    }
-
     function removePlayer(playerLeaving) {
         const index = playersMemory.indexOf(playerLeaving);
+        console.log(index);
         if (index > -1) {
-            playersMemory.splice(index, 1);
-            localStorage.setItem("saved_players", JSON.stringify(playersMemory));
+            const newList = playersMemory.slice(index);
+            const newCount = playerCount-1;
+            setPlayers(newList)
+            setPlayerCount(newCount);
+            console.log(playersMemory)
         }
-        console.log(playersMemory)
     }
 
     function photoUpload(e) {
@@ -91,6 +85,17 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
             return "photo_placeholder.png"
         }
         return photo;
+    }
+
+    useEffect( () => {
+        const interval = setInterval( () => {
+            if (user.name) join();
+        },15000)
+        return () => clearInterval(interval);
+    },[players, playerCount])
+
+    function lobbyTest() {
+        removePlayer(players[2])
     }
 
 
@@ -136,7 +141,8 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
         <div>
             {user.name && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
         </div>
-        <button className="styled_button test" onClick={() => lobbyTest()}>Add Player (test)</button>
+        <button className="styled_button test" onClick={() => lobbyTest()}>Remove Player (test)</button>
+        <button className="styled_button test" onClick={() => join()}>Add Player (test)</button>
         <div hidden className="foot">
             <h4>Game Mode Select</h4>
             <div id="games">

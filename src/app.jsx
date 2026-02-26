@@ -23,9 +23,9 @@ export default function App() {
   };
 
   const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
-  const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User('','','####'));
+  const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User(null,'','####'));
   const [ host, setHost ] = React.useState("Host");
-  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || []);
+  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || (user.name ? [user.name] : []));
   const [ status, setStatus] = React.useState("lobby");
   const [ playerCount, setPlayerCount ] = React.useState(Number(localStorage.getItem("playerCount")) || 1);
   const [ playersOut, setOut] = React.useState(JSON.parse(localStorage.getItem("out")) || []);

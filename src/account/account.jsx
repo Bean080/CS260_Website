@@ -40,7 +40,7 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
 
                 localStorage.setItem("user", JSON.stringify(account));
                 setUser(account)
-                setLobby([user.name])
+                setPlayers([account.name])
                 toast.success('Signed in')
 
                 setCode("####")
@@ -68,7 +68,8 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
         localStorage.setItem("user", JSON.stringify(account));
         setUser(account);
         setHost(account.name);
-        
+        setPlayers([account.name])
+
         usersMemory.push(account);
         localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
         toast.success('Created new user');

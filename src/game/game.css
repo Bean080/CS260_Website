@@ -69,14 +69,19 @@ main#game {
     align-items: center;
     align-self: center;
     overflow: hidden;
-
+    gap: 1vw;
+    
     height: 40vh;
     width: 100%;
 
     border: 2px solid beige;
     border-radius: 20px;
     background-color:  beige;
-    color:rgb(84, 8, 50)
+}
+
+.out_text {
+    color:rgb(84, 8, 50);
+    font-size: 8em;
 }
 
 
@@ -143,13 +148,35 @@ main#game {
     border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
-.flash-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: white;
-    z-index: 9999;
-    pointer-events: none;
+.confirmation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 60vw;
+    height: 60vh;
+
+    background-color: beige;
+    border: 2px solid beige;
+    border-radius: 20px;
+    box-shadow: 0 0 5em rgba(0, 0, 0, .9);
+
+    color:rgb(84, 8, 50);
+    font-size: 4rem;
+    top: 50%;
+    transform: translateY(-40%);
 }
+
+.confirm_buttons {
+    display: flex;
+    gap: 1vw;
+}
+
+.confirm_photo {
+    max-width: 58vw;
+    border: 2px solid transparent;
+    border-radius: 20px;
+}
+
+

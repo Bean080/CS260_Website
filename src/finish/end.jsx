@@ -20,6 +20,8 @@ export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, 
     }
 
     function isOut(num) {
+        console.log(playersOut)
+        if (!playersOut) return true;
         for (const player of playersOut){
             if (player[0] == players[num]) {
                 return true;

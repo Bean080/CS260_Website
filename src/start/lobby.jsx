@@ -19,7 +19,6 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
         }
 
         setStatus("playing");
-        console.log(status);
         navigate("/game");
     }
 
@@ -51,14 +50,15 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
     }
 
     function removePlayer(playerLeaving) {
-        const index = playersMemory.indexOf(playerLeaving);
+        const index = players.indexOf(playerLeaving);
+        console.log(players);
         console.log(index);
         if (index > -1) {
-            const newList = playersMemory.slice(index);
+            console.log(players[index])
+            const newList = players.filter(person => person !== playerLeaving);
             const newCount = playerCount-1;
             setPlayers(newList)
             setPlayerCount(newCount);
-            console.log(playersMemory)
         }
     }
 
@@ -95,7 +95,7 @@ export function Lobby({user , gameCode,  setUser , setStatus , setPlayerCount , 
     },[players, playerCount])
 
     function lobbyTest() {
-        removePlayer(players[2])
+        removePlayer(players[1])
     }
 
 

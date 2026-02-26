@@ -169,6 +169,29 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
         takeOutPlayer(target, photo);
     }
 
+    useEffect( () => {
+        const interval = setInterval( () => {
+            if (playersOut.length < playerCount-2) {
+                const targetMemory = JSON.parse(localStorage.getItem("targetMemory"));
+                const num = Math.floor(Math.random() * targetMemory.length);
+                let testPerson = targetMemory[num];
+                takeOutPlayer(testPerson, "photo_placeholder.png");
+
+                toast.custom(
+                <div className="out">
+                    <img className="photo" alt="Photo of victim" src={"photo_placeholder.png"}></img>
+                    <h3 className="out_text">{testPerson} is Out!</h3>
+                </div>,
+                {style: {
+                    background: 'transparent',
+                    minWidth: "90vw",
+                    minHeight: "40vh",
+                }})
+            }
+        },20000)
+        return () => clearInterval(interval);
+    },[playersOut, target])
+
     useEffect(() => {
             if (target == user.name && playersOut.length == playerCount-1) end();
     }, [target])

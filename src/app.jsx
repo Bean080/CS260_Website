@@ -39,6 +39,10 @@ export default function App() {
     localStorage.setItem("out", JSON.stringify(playersOut));
   },[playersOut]);
 
+  useEffect(() => {
+    localStorage.setItem("playerCount", JSON.stringify(playerCount));
+  },[playerCount]);
+
   
   return (
     <BrowserRouter>

@@ -81,7 +81,26 @@ main#game {
 
 .out_text {
     color:rgb(84, 8, 50);
-    font-size: 8em;
+    font-size: 5em;
+}
+
+.x_button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: transparent;
+    background-color: rgb(84, 8, 50);
+    color: beige;
+
+    border-radius: 4px;
+    box-sizing: border-box;
+    position: relative;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    line-height: 1;
 }
 
 

@@ -46,7 +46,6 @@ export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, 
 
   return (
     <main className= "end">
-        <button onClick={tester}></button>
         <div id='end'>
             {isOut(0) && <div className="player">
                 <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(0)}></img>

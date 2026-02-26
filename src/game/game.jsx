@@ -93,6 +93,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 <div className="out">
                     <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
                     <h3 className="out_text">{target} is Out!</h3>
+                    <button className="x_button" onClick={() => toast.remove()}>X</button>
                 </div>,
                 {style: {
                     background: 'transparent',
@@ -106,6 +107,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 <div className="out">
                     <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
                     <h3>{user.name} is a LIAR!</h3>
+                    <button className="x_button" onClick={() => toast.remove()}>X</button>
                 </div>,
                 {style: {
                     background: 'transparent',
@@ -175,12 +177,14 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 const targetMemory = JSON.parse(localStorage.getItem("targetMemory"));
                 const num = Math.floor(Math.random() * targetMemory.length);
                 let testPerson = targetMemory[num];
+                if (testPerson === user.name) return;
                 takeOutPlayer(testPerson, "photo_placeholder.png");
 
                 toast.custom(
                 <div className="out">
                     <img className="photo" alt="Photo of victim" src={"photo_placeholder.png"}></img>
                     <h3 className="out_text">{testPerson} is Out!</h3>
+                    <button className="x_button" onClick={() => toast.remove()}>X</button>
                 </div>,
                 {style: {
                     background: 'transparent',
@@ -200,7 +204,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
         <main id='game'>
             <div><Toaster position="center"/></div>
             <div className="dropdown">
-                <button className="styled_button" onClick={() => test()}>Remove Player</button>
+                <button hidden className="styled_button" onClick={() => test()}>Remove Player</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>
@@ -220,7 +224,6 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
                 </div>
             </div>
             
-
             <button className="styled_button" onClick={() => end()}>End Game</button>
         </main>
     );

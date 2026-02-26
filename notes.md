@@ -72,26 +72,13 @@ This part required significant rewriting of previous html and css. I still think
 
 ## React Part 2: Reactivity
 
-This was a lot of fun to see it all come together. I had to keep remembering to use React state instead of just manipulating the DOM directly.
+I spent a crazy amount of time on this section but got it working suoer well. I am going to put the steps to get started here so that the TAs can see them. I had a lot of fun and headaches getting the mechanics of the game itself to work. Local memory is a bit troublesome when it comes to people having left over data from previous visits.
 
-Handling the toggling of the checkboxes was particularly interesting.
-
-```jsx
-<div className="input-group sound-button-container">
-  {calmSoundTypes.map((sound, index) => (
-    <div key={index} className="form-check form-switch">
-      <input
-        className="form-check-input"
-        type="checkbox"
-        value={sound}
-        id={sound}
-        onChange={() => togglePlay(sound)}
-        checked={selectedSounds.includes(sound)}
-      ></input>
-      <label className="form-check-label" htmlFor={sound}>
-        {sound}
-      </label>
-    </div>
-  ))}
-</div>
-```
+1. open the webpage
+2. go to accounts
+3. create an account
+4. enter a code and hit host
+5. you can either go add players with the test buttons or wait for them to join
+6. click play when you have a few players
+7. take photos and confirm them as the target to eliminate players. (they also eliminate eachother)
+8. Ending the game early will only display the eliminated players, so you can do that or just take a few photos to do it automatically (that will look better)

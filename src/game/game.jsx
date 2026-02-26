@@ -35,6 +35,7 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
     }, [user, players]);
 
     function end() {
+        toast.dismiss();
         localStorage.removeItem("targetMemory")
         localStorage.removeItem("target")
         setStatus("ending");

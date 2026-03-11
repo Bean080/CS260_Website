@@ -28,27 +28,26 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
         return false;
     }
 
-    function login() {
+
+    async function login() {
         if (!validCredentials(userText, passwordText)) {
             return;
         }
-        const savedUsers = localStorage.getItem("usersMemory");
-        const usersMemory = savedUsers ? JSON.parse(savedUsers) : [];
-        console.log(usersMemory);
-        for (const account of usersMemory) {
-            if (account.name == userText && account.password == passwordText){
-
-                localStorage.setItem("user", JSON.stringify(account));
-                setUser(account)
-                setPlayers([account.name])
-                toast.success('Signed in')
-
-                setCode("####")
-                localStorage.setItem("code", "####")
-                return;
-            }
+        const res = await fetch("api/auth", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({userText, passwordText})
+        })
+        if (res.ok) {
+            res = res.json();
+            const account = JSON.parse(res.user);
+            toast.success('Signed in')
+            setUser(account.name)
+            setPlayers([account.name])
+            setCode(account.code)
+        } else {
+            toast.error('Account Doesn\'t Exist')
         }
-        toast.error('Account Doesn\'t Exist')
     };
 
     function createAccount() {
@@ -78,6 +77,60 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
         setCode("####")
         localStorage.setItem("code", "####")
     }
+
+
+
+    async function createAccount() {
+        if (!validCredentials(userText, passwordText)) {
+            return;
+        }
+        const res = await fetch("api/auth", {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({userText, passwordText})
+        })
+
+
+
+        for (const account of usersMemory) {
+            if (account.name === userText && account.password === passwordText){
+                toast.error('Signed in')
+                return;
+            }
+        } 
+        const account = new User(userText, passwordText, "####")
+        localStorage.setItem("user", JSON.stringify(account));
+        setUser(account);
+        setHost(account.name);
+        setPlayers([account.name])
+
+        usersMemory.push(account);
+        localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
+        toast.success('Created new user');
+        console.log("Created Account");
+
+        setCode("####")
+        localStorage.setItem("code", "####")
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function logout() {
         localStorage.removeItem("code");

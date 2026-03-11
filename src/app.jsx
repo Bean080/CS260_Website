@@ -22,6 +22,7 @@ export default function App() {
     }
   };
 
+  const [game, setGame] = React.useState([])
   const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
   const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User(null,'','####'));
   const [ host, setHost ] = React.useState("Host");
@@ -32,8 +33,40 @@ export default function App() {
   const [ pause, setPause] = React.useState(false);
   
   useEffect(() => {
+    getUser()
+    localStorage.setItem("user", JSON.stringify(user));
+  },[]);
+
+  async function getUser() {
+    const res = await fetch("/api/user/me", {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+    } )
+
+    res = res.json();
+    const account = JSON.parse(res.user);
+    setUser(account.name)
+  }
+
+
+
+  useEffect(() => {
+    getLobby()
     localStorage.setItem("saved_players", JSON.stringify(players));
   },[players]);
+
+  async function getLobby() {
+    const res = await fetch("/api/game", {
+      method: "GET",
+      headers: {"Content-Type": "application/json"},
+    } )
+
+    res = res.json();
+    const lobby = JSON.parse(res.lobby);
+    setLobby(lobby)
+  }
+
+
 
   useEffect(() => {
     localStorage.setItem("out", JSON.stringify(playersOut));

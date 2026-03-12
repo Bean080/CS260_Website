@@ -71,7 +71,12 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
             headers: {"Content-Type": "application/json"},
             body: ""
         })
-        if (res.ok) {
+        let res2 = await fetch("api/game", {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: ""
+        })
+        if (res.ok && res2.ok) {
             localStorage.removeItem("user");
             setUser(null);
             toast.success("Logged Out");
@@ -94,8 +99,8 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
                 body: JSON.stringify({code:code})
             })
             if (res.ok) {
-                res = await res.json();
-                const newCode = JSON.parse(res.lastCode);
+                const data = await res.json();
+                const newCode = data.lastCode;
                 setCode(newCode);
             }
         } else {

@@ -69,7 +69,7 @@ app.patch('/api/user/me', async (req, res) => {
     }
 });
 
-const users = [];
+let users = [];
 
 async function createUser(name, password) {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -137,7 +137,7 @@ app.post('/api/game', async (req, res) => {
     game.players.push(user)
     game.playerCount = game.playerCount + 1
 
-    console.log(games);
+    user.code = req.body.code;
     res.status(200).send({ code: game.code, host: JSON.stringify(user), game:game});
   }
 });
@@ -168,6 +168,7 @@ app.delete('/api/game', async (req, res) => {
   const gameToken = req.cookies['gameToken'];
   const game = await getGame('gameToken', gameToken);
   if (game) {
+    games = games.filter(g => g.gameToken !== gameToken);
     clearGameCookie(res, game);
   }
 
@@ -195,7 +196,7 @@ app.patch('/api/game/add', async (req, res) => {
     if (user && game.playerCount < 9) {
         game.players.push(req.body.joiner)
         game.playerCount = game.players.length;
-        res.status(200).send({msg: 'Joined Game'});
+        res.status(200).send({msg: 'Joined Game', game:game});
     } else {
       console.log(game.players)
         res.status(401).send({ msg: 'Unauthorized' });
@@ -208,7 +209,7 @@ app.patch('/api/game/remove', async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
 
-    if (user && game.playerCount > 0) {
+    if (user && game.playerCount > 1) {
         const targetName = req.body.leaver.name; 
 
         game.players = game.players.filter(p => p.name !== targetName);
@@ -221,7 +222,7 @@ app.patch('/api/game/remove', async (req, res) => {
 });
 
 
-const games = [];
+let games = [];
 
 async function createGame(host, code) {
 

@@ -81,7 +81,7 @@ export default function App() {
   },[playerCount]);
 
   function superTest() {
-    console.log(game)
+    console.log(game.code)
   }
 
   

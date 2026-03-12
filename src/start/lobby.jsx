@@ -104,7 +104,7 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     // },[players, playerCount])
 
     function lobbyTest() {
-        removePlayer(players[1])
+        removePlayer(game.players[1])
     }
 
 

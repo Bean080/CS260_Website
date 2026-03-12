@@ -133,7 +133,8 @@ app.post('/api/game', async (req, res) => {
 
     const game = await createGame(user, req.body.code);
     setGameCookie(res, game);
-    game.players.push(JSON.stringify(user))
+    game.host = user;
+    game.players.push(user)
     game.playerCount = game.playerCount + 1
 
     console.log(games);
@@ -149,7 +150,7 @@ app.put('/api/game', async (req, res) => {
 
   if (game && user) {
     setGameCookie(res, game);
-    game.players.push(JSON.stringify(user))
+    game.players.push(user)
     game.playerCount = game.playerCount + 1
 
     res.status(200).send({ 
@@ -192,10 +193,7 @@ app.patch('/api/game/add', async (req, res) => {
     const user = await getUser('token', token);
 
     if (user && game.playerCount < 9) {
-        const joiner = req.body.joiner;
-        console.log(joiner)
-        game.players.push(joiner)
-        console.log(game.players.length)
+        game.players.push(req.body.joiner)
         game.playerCount = game.players.length;
         res.status(200).send({msg: 'Joined Game'});
     } else {
@@ -211,11 +209,9 @@ app.patch('/api/game/remove', async (req, res) => {
     const user = await getUser('token', token);
 
     if (user && game.playerCount > 0) {
-        const leaver = req.body.leaver;
-        let player = getPlayer(game, 'name', leaver);
-        const newList = game.players.filter(person => person !== player);
-        game.players = newList;
+        const targetName = req.body.leaver.name; 
 
+        game.players = game.players.filter(p => p.name !== targetName);
         game.playerCount = game.players.length;
 
         res.status(200).send({game:game});
@@ -252,7 +248,7 @@ async function getGame(field, value) {
 
 async function getPlayer(game, field, value) {
   if (value) {
-    return game.players.find((game) => game[field] === value);
+    return game.players.find((p) => p[field] === value);
   }
   return null;
 }
@@ -299,13 +295,7 @@ app.get('/api/test/player', async (req, res) => {
     return res.status(400).send({ msg: 'No active game session' });
   }
 
-  const currentNames = game.players.map(p => {
-    try {
-      return typeof p === 'string' ? JSON.parse(p).name : p.name;
-    } catch (e) {
-      return null;
-    }
-  });
+  const currentNames = game.players.map(p => p.name);
 
   const availablePlayers = testPlayers.filter(fakePlayer => !currentNames.includes(fakePlayer.name));
   if (availablePlayers.length === 0) {

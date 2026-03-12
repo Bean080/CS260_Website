@@ -1,21 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./account.css";
 import {useNavigate} from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
-export function Account({user, setCode, setUser, setHost, setPlayers }) {
+export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) {
     const navigate = useNavigate();
     const [userText, setUserText] = React.useState("")
     const [passwordText, setPassText] = React.useState("")
-    
-    class User {
-        constructor(name ="", password="", lastCode="####"){
-        this.name = name;
-        this.password = password;
-        this.lastCode = lastCode;
-        this.photo = "";
-        }
-    };
 
     function validCredentials(username, password) {
         if (username && username.length >= 3) {
@@ -33,112 +24,58 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
         if (!validCredentials(userText, passwordText)) {
             return;
         }
-        const res = await fetch("api/auth", {
+        let res = await fetch("api/auth", {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({userText, passwordText})
+            body: JSON.stringify({name:userText, password:passwordText})
         })
         if (res.ok) {
-            res = res.json();
-            const account = JSON.parse(res.user);
-            toast.success('Signed in')
-            setUser(account.name)
-            setPlayers([account.name])
+            const data = await res.json();
+            const account = JSON.parse(data.account);
+            setUser(account)
             setCode(account.code)
+            localStorage.setItem("user", JSON.stringify(account));
+            toast.success('Signed in')
         } else {
             toast.error('Account Doesn\'t Exist')
         }
     };
-
-    function createAccount() {
-        if (!validCredentials(userText, passwordText)) {
-            return;
-        }
-        const savedUsers = localStorage.getItem("usersMemory");
-        const usersMemory = savedUsers ? JSON.parse(savedUsers) : [];
-
-        for (const account of usersMemory) {
-            if (account.name === userText && account.password === passwordText){
-                toast.error('Signed in')
-                return;
-            }
-        } 
-        const account = new User(userText, passwordText, "####")
-        localStorage.setItem("user", JSON.stringify(account));
-        setUser(account);
-        setHost(account.name);
-        setPlayers([account.name])
-
-        usersMemory.push(account);
-        localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
-        toast.success('Created new user');
-        console.log("Created Account");
-
-        setCode("####")
-        localStorage.setItem("code", "####")
-    }
-
 
 
     async function createAccount() {
         if (!validCredentials(userText, passwordText)) {
             return;
         }
-        const res = await fetch("api/auth", {
-            method: "PUT",
+        let res = await fetch("api/auth", {
+            method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({userText, passwordText})
+            body: JSON.stringify({name:userText, password:passwordText})
         })
-
-
-
-        for (const account of usersMemory) {
-            if (account.name === userText && account.password === passwordText){
-                toast.error('Signed in')
-                return;
-            }
-        } 
-        const account = new User(userText, passwordText, "####")
-        localStorage.setItem("user", JSON.stringify(account));
-        setUser(account);
-        setHost(account.name);
-        setPlayers([account.name])
-
-        usersMemory.push(account);
-        localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
-        toast.success('Created new user');
-        console.log("Created Account");
-
-        setCode("####")
-        localStorage.setItem("code", "####")
+        if (res.ok) {
+            res = await res.json();
+            console.log(res)
+            const account = JSON.parse(res.account);
+            console.log(account)
+            setUser(account);
+            setCode(account.code);
+            localStorage.setItem("user", JSON.stringify(account));
+            toast.success('Created new user');
+        } else {
+            toast.error('Account already exists')
+        }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function logout() {
-        localStorage.removeItem("code");
-        localStorage.removeItem("user");
-        localStorage.removeItem("host");
-        setUser((new User()));
-        setCode("####");
-        toast.success("Logged Out");
+    async function logout() {
+        let res = await fetch("api/auth", {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: ""
+        })
+        if (res.ok) {
+            localStorage.removeItem("user");
+            setUser(null);
+            toast.success("Logged Out");
+        }
     };
 
     function userChange(e) {
@@ -149,58 +86,68 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
         setPassText(e.target.value);
     }
 
-    function codeUpdate() {
-        const id = "codeInput"
-        const code = document.getElementById(id).value;
+    async function codeUpdate(code) {
         if (code.length === 4) {
-
-            const savedUsers = localStorage.getItem("usersMemory");
-            const usersMemory = savedUsers ? JSON.parse(savedUsers) : [];
-            const account = usersMemory.find(value => value.name === user.name);
-
-            setCode(code || "####");
-            localStorage.setItem("code", code);
-            account.lastCode = code;
-            user.lastCode = code;
-
-            localStorage.setItem("user", JSON.stringify(user));
-            localStorage.setItem("usersMemory", JSON.stringify(usersMemory));
+            let res = await fetch("api/user/me", {
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({code:code})
+            })
+            if (res.ok) {
+                res = await res.json();
+                const newCode = JSON.parse(res.lastCode);
+                setCode(newCode);
+            }
         } else {
             toast.error("Code must be 4 numbers")
         }
     };
 
-    function host() {
-        if (!user.name) {
+    //Make lobby and set user as host
+    async function host() {
+        if (!user) {
             toast.error("Please sign in first");
             return;
         }
-        codeUpdate();
-        setHost(user.name);
-        localStorage.setItem("host",user.name);
-
-        setCode(document.getElementById("codeInput").value);
-        navigate("/");
+        const code = document.getElementById("codeInput").value;
+        let res = await fetch("api/game", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({code:code})
+            })
+        if (res.ok) {
+            console.log("making lobby")
+            res = await res.json();
+            const newHost = JSON.parse(res.host);
+            codeUpdate(code);
+            setGame(res.game)
+            setHost(newHost);
+        } else {
+            toast.error("Lobby code in use")
+        }
+        //navigate("/");
     }
 
-    function join() {
+    async function join() {
         if (!user) {
             alert("Please sign in first");
             return;
         }
         const code = document.getElementById("codeInput").value;
-        const servers = ["4545", "2004", "0002"];
-        if (servers.includes(code)) {
-            codeUpdate();
-            setHost("Someone New!");
-            localStorage.setItem("host","Someone New!");
-            setCode(code);
-            navigate("/");
-        } else {
-            alert("Game code doesn't match existing games.")
+
+        let res = await fetch("api/game", {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({code:code})
+            })
+
+        if (res.ok) {
+            res = await res.json();
+            const newHost = JSON.parse(res.host);
+            codeUpdate(code);
+            setHost(newHost);
         }
     }
-
 
 
 
@@ -213,8 +160,8 @@ export function Account({user, setCode, setUser, setHost, setPlayers }) {
             <div><input id="password" type="password" placeholder="Password" onChange={passChange} /></div>
             <div>
                 <button className="styled_button" type="submit" onClick={login}>Submit</button>
-                {!user.name && <button className="styled_button" onClick={createAccount}>Create</button>}
-                {user.name && <button className="styled_button" onClick={logout}>Logout</button>}
+                {!user && <button className="styled_button" onClick={createAccount}>Create</button>}
+                {user && <button className="styled_button" onClick={logout}>Logout</button>}
             </div>
         </div>
             <div className="center">

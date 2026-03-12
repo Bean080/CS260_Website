@@ -13,28 +13,24 @@ import { Account } from './account/account.jsx';
 
 
 export default function App() {
-  class User {
-    constructor(name, password, lastCode){
-    this.name = name;
-    this.password = password;
-    this.lastCode = lastCode;
-    this.photo = "";
-    }
-  };
 
-  const [game, setGame] = React.useState([])
-  const [gameCode, setCode] = React.useState(localStorage.getItem("code")||"####");
-  const [user, setUser] = React.useState((JSON.parse(localStorage.getItem("user"))) || new User(null,'','####'));
+  const [authState, setAuthState] = React.useState(false);
+  const [game, setGame] = React.useState(null);
+  const [gameCode, setCode] = React.useState("####");
+  const [user, setUser] = React.useState({name:null});
   const [ host, setHost ] = React.useState("Host");
-  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || (user.name ? [user.name] : []));
+  const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || (user ? [user] : []));
   const [ status, setStatus] = React.useState("lobby");
-  const [ playerCount, setPlayerCount ] = React.useState(Number(localStorage.getItem("playerCount")) || 1);
+  const [ playerCount, setPlayerCount ] = React.useState(0);
   const [ playersOut, setOut] = React.useState(JSON.parse(localStorage.getItem("out")) || []);
   const [ pause, setPause] = React.useState(false);
   
   useEffect(() => {
-    getUser()
-    localStorage.setItem("user", JSON.stringify(user));
+    try {
+      getUser()
+    } catch (error) {
+      return
+    }
   },[]);
 
   async function getUser() {
@@ -42,28 +38,36 @@ export default function App() {
       method: "GET",
       headers: {"Content-Type": "application/json"},
     } )
+    if (res.ok) {
+      let data = await res.json();
+      const account = JSON.parse(data.account);
 
-    res = res.json();
-    const account = JSON.parse(res.user);
-    setUser(account.name)
+      setCode(account.code)
+      setUser(account)
+      setAuthState(true);
+      localStorage.setItem("user", JSON.stringify(account));
+    }
   }
 
-
-
   useEffect(() => {
-    getLobby()
-    localStorage.setItem("saved_players", JSON.stringify(players));
-  },[players]);
+    try {
+      getLobby()
+    } catch (error) {
+      return
+    }
+  },[]);
 
   async function getLobby() {
     const res = await fetch("/api/game", {
       method: "GET",
       headers: {"Content-Type": "application/json"},
     } )
-
-    res = res.json();
-    const lobby = JSON.parse(res.lobby);
-    setLobby(lobby)
+    if (res.ok) {
+      let data = await res.json();
+      console.log(data.lobby)
+      const lobby = JSON.parse(data.lobby);
+      setGame(lobby)
+    }
   }
 
 
@@ -76,6 +80,10 @@ export default function App() {
     localStorage.setItem("playerCount", JSON.stringify(playerCount));
   },[playerCount]);
 
+  function superTest() {
+    console.log(game)
+  }
+
   
   return (
     <BrowserRouter>
@@ -83,7 +91,7 @@ export default function App() {
         <div className="vignette"></div>
           <header>
             <nav className="navbar fixed-top navbar-dark">
-              <h1>Photogenic {user.name && "-"} {user.name}</h1>
+              <h1>Photogenic {user? user.name : "Sign in"}</h1>
               <menu className="navbar-nav">
                 {pause && <li className="nav-item">
                   <NavLink className='nav-link styled_button' to='' onClick={() => setPause(false)}>Home</NavLink>
@@ -94,13 +102,14 @@ export default function App() {
               </menu>
             </nav>
           </header>
-          <h5 id="code">Game Code: {gameCode}</h5>
+          <h5 id="code">Game Code: {game? game.code : "..."}</h5>
+          <button onClick={superTest}></button>
             
             <Routes>
-                <Route path='/' element={<Lobby user={user} gameCode={gameCode} setUser={setUser} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
+                <Route path='/' element={<Lobby user={user} game={game} gameCode={gameCode} setUser={setUser} setGame={setGame} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
                 <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
-                <Route path='/account' element={<Account user={user} setCode={setCode} setUser={setUser} setHost={setHost} setPlayers={setPlayers}/>} />
+                <Route path='/account' element={<Account user={user} setGame={setGame} setCode={setCode} setUser={setUser} setHost={setHost} setPlayers={setPlayers} />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 

@@ -88,7 +88,31 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
 
     //out notifications
     async function out(takenPhoto){
-        const response = await confirmOut(takenPhoto);
+        const targetProfilePhoto = target?.photo;
+        let aiVerified = "None";
+
+        if (targetProfilePhoto && targetProfilePhoto !== "photo_placeholder.png" && game.host.ai) {
+            const loadingToastId = toast.loading("Analyzing the photo...");
+            try {
+                const res = await fetch('/api/ai/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        targetPhotoBase64: targetProfilePhoto,
+                        takenPhotoBase64: takenPhoto
+                    })
+                });
+
+                const data = await res.json();
+                aiVerified = data.verified;
+            } catch (error) {
+                console.error("AI check failed", error);
+            } finally {
+                toast.dismiss(loadingToastId);
+            }
+        }
+
+        const response = await confirmOut(takenPhoto, aiVerified);
 
         if (response) {
             toast.custom(
@@ -121,11 +145,17 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
     };
 
     //confirm elimination
-    function confirmOut(takenPhoto) {
+    function confirmOut(takenPhoto, aiVerified) {
+        let borderColor = "none";
+
+        if (aiVerified) borderColor = "6px solid #08461f";
+        if (!aiVerified) borderColor = "6px solid #c90e0e";
+        if (aiVerified==="None") borderColor = "6px solid transparent";
+
         return new Promise((resolve) => (
             toast.custom(
                 <div className="confirmation">
-                    <img className="confirm_photo" src={takenPhoto}></img>
+                    <img className="confirm_photo" src={takenPhoto} style={{ border: borderColor, borderRadius: "10px" }}></img>
                     <p>Is this {target.name}?</p>
                     <div className="confirm_buttons">
                         <button className="styled_button" onClick={() => {
@@ -201,6 +231,9 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
         }
     }, [target])
 
+
+
+
     return (
         <main id='game'>
             <div><Toaster position="center"/></div>
@@ -211,7 +244,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
                 </button>
 
                 <div className={`${dropdown} dropdown_content`}>
-                    <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
+                    <img alt="Photo of Target" src={target ? target.photo : "photo_placeholder.png"} className="target_picture"></img>
                     <h3>{ target ? target.name : null }</h3>
                 </div>
             </div>

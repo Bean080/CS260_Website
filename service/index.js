@@ -12,7 +12,14 @@ const {LinkedList} = require("./linkedList.js");
 const fs = require('fs');
 const path = require('path');
 
-app.use(express.json({ limit: '10mb' }));
+//Gemini
+
+require('dotenv').config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { stringify } = require('querystring');
+
+
+app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
 
 
@@ -65,15 +72,38 @@ app.get('/api/user/me', async (req, res) => {
   }
 });
 
-app.patch('/api/user/me', async (req, res) => {
-    const token = req.cookies['token'];
-    const user = await getUser('token', token);
-    if (user) {
-        user.lastCode = req.body.code;
-        res.status(200).send({msg: 'Code Updated', lastCode: user.lastCode });
-    } else {
-        res.status(401).send({ msg: 'Unauthorized' });
-    }
+//update code
+app.patch('/api/user/code', async (req, res) => {
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+  if (user) {
+      user.lastCode = req.body.code;
+      res.status(200).send({msg: 'Code Updated', lastCode: user.lastCode });
+  } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+app.patch('/api/user/photo', async (req, res) => {
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+  if (user) {
+      user.photo = req.body.photo;
+      res.status(200).send(JSON.stringify({user:user}));
+  } else {
+      res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
+app.patch("/api/user/ai", async (req,res) => {
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+  if (user.ai) {
+    user.ai = false;
+  } else {
+    user.ai = true;
+  }
+  res.status(200).send(JSON.stringify({user:user}));
 });
 
 let users = [];
@@ -84,6 +114,7 @@ async function createUser(name, password) {
   const user = {
         name: name,
         password: passwordHash,
+        ai: false,
         code: "####",
         photo: "photo_placeholder.png",
     };
@@ -114,14 +145,6 @@ function clearAuthCookie(res, user) {
   delete user.token;
   res.clearCookie('token');
 }
-
-
-
-
-
-
-
-
 
 
 // ______________________Game__________________//
@@ -332,7 +355,13 @@ const names = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin",
 
 (async function setupFakeUsers() {
   for (let name of names) {
-    const user = await createUser(name, "00000000"); 
+    const user = await createUser(name, "00000000");
+
+    const imagePath = path.join(__dirname, '..', 'public', 'IMG_8236.jpeg');
+    const rawBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
+    const profileString = `data:image/jpeg;base64,${rawBase64}`;
+
+    user.photo = profileString;
     testPlayers.push(user);
   }
   console.log(`Loaded ${testPlayers.length} fake players for testing.`);
@@ -431,6 +460,55 @@ app.patch('/api/assassins', async (req, res) => {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 })
+
+
+
+//______________________________Gemini______________________________//
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+app.post('/api/ai/verify', async (req, res) => {
+    try {
+        const { targetPhotoBase64, takenPhotoBase64 } = req.body;
+
+        const cleanTarget = targetPhotoBase64.replace(/^data:image\/\w+;base64,/, "");
+        const cleanTaken = takenPhotoBase64.replace(/^data:image\/\w+;base64,/, "");
+
+        const imageParts = [
+            {
+                inlineData: {
+                    data: cleanTarget,
+                    mimeType: "image/jpeg"
+                }
+            },
+            {
+                inlineData: {
+                    data: cleanTaken,
+                    mimeType: "image/jpeg"
+                }
+            }
+        ];
+
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const prompt = "Look closely at the person in the first image and the person in the second image. Is it the exact same person? Reply with ONLY the word 'YES' or 'NO'.";
+
+        const result = await model.generateContent([prompt, ...imageParts]);
+        const text = result.response.text().trim().toUpperCase();
+
+        console.log(text)
+
+        if (text.includes("YES")) {
+            res.status(200).send({ verified: true });
+        } else {
+            res.status(200).send({ verified: false });
+        }
+
+    } catch (error) {
+        console.error("Gemini Verification Failed:", error);
+        res.status(500).send({ msg: "AI verification failed" });
+    }
+});
+
+
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;

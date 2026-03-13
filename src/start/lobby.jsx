@@ -80,25 +80,24 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
         if (file) {
             const reader = new FileReader();
 
-            reader.onload = (event) => {
+            reader.onload = async (event) => {
                 const fileData = event.target.result;
-                console.log(fileData);
 
-                const newUser = { ...user, photo: fileData };
-                setUser(newUser);
-                localStorage.setItem("user", JSON.stringify(newUser));
+                let res = await fetch("/api/user/photo", {
+                    method: "PATCH",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({photo:fileData})
+                })
+                if (res.ok) {
+                    const data = await res.json()
+                    setUser(data.user);
+                }
             };
 
             reader.readAsDataURL(file);
         }
     }
 
-    function profilePhoto(photo) {
-        if (!photo) {
-            return "photo_placeholder.png"
-        }
-        return photo;
-    }
 
     // useEffect( () => {
     //     const interval = setInterval( () => {
@@ -145,14 +144,14 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
                 <b>Player8 - {game? game.players[7].name : "..."}</b> 
             </div>}
             <div className="player">
-                <img className= "photo" alt= "Host" src={user.name? user.photo : "photo_placeholder.png"}></img>
+                <img className= "photo" alt= "Host" src={user? user.photo : "photo_placeholder.png"}></img>
                 <b>(YOU) {user? user.name : "Sign in"}</b> 
                 <label htmlFor="file-upload" className="file_upload" >Upload Photo</label>
                 <input id="file-upload" type="file" accept="image/*" onChange={photoUpload}></input>
             </div>
         </div>
         <div>
-            {user.name && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
+            {user && <button type= "button" className="styled_button start_button" onClick={() => play()}>Start Game</button>}
         </div>
         <button className="styled_button test" onClick={() => lobbyTest()}>Remove Player (test)</button>
         <button className="styled_button test" onClick={() => join()}>Add Player (test)</button>

@@ -17,7 +17,7 @@ export default function App() {
   const [authState, setAuthState] = React.useState(false);
   const [game, setGame] = React.useState(null);
   const [gameCode, setCode] = React.useState("####");
-  const [user, setUser] = React.useState({name:null});
+  const [user, setUser] = React.useState(null);
   const [ host, setHost ] = React.useState("Host");
   const [ players, setPlayers ] = React.useState(JSON.parse(localStorage.getItem("saved_players")) || (user ? [user] : []));
   const [ status, setStatus] = React.useState("lobby");
@@ -79,9 +79,7 @@ export default function App() {
   },[playerCount]);
 
   function superTest() {
-    logGame(game)
-    logUser(user)
-    console.log()
+    console.log(game)
   }
 
   const location = useLocation();
@@ -105,7 +103,7 @@ export default function App() {
           </nav>
         </header>
         <h5 id="code">Game Code: {game? game.code : "..."}</h5>
-        <button onClick={superTest}></button>
+        <button hidden onClick={superTest}></button>
           
           <Routes>
               <Route path='/' element={<Lobby user={user} game={game} gameCode={gameCode} setUser={setUser} setGame={setGame} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />

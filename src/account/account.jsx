@@ -88,7 +88,7 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
 
     async function codeUpdate(code) {
         if (code.length === 4) {
-            let res = await fetch("api/user/me", {
+            let res = await fetch("api/user/code", {
                 method: "PATCH",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({code:code})
@@ -150,6 +150,22 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
     }
 
 
+    async function toggleAI() {
+        if (!user) {
+            toast.error("Login Required")
+            return;
+        }
+        let res = await fetch("/api/user/ai", {
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+            })
+        if (res.ok) {
+            const data = await res.json();
+            setUser(data.user);
+            console.log(user.ai);
+        }
+    }
+
 
   return (
     <main id="account">
@@ -171,7 +187,9 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
                 <button className="styled_button" onClick={ () => join()}>Join</button>
             </div>
         </div>
-        <div className="center"></div>
+        {user && <div className="center">
+            <button className="styled_button" onClick={toggleAI}>Toggle AI : {user.ai? "On":"Off"}</button>
+        </div>}
         <div className="center"></div>
     </main>
   );

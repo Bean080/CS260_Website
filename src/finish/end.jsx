@@ -2,28 +2,35 @@ import React from 'react';
 import './end.css';
 import { useNavigate } from 'react-router-dom';
 
-export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, players, host, status, playersOut, setOut} ) {
+export function End( {user, game, setGame, setStatus, setPlayerCount, setPlayers, playerCount, players, host, status, playersOut, setOut} ) {
     const navigate = useNavigate();
 
-    function end() {
-        setStatus("lobby")
-        console.log("lobby");
+    if (!game) {
+        return (
+            <main className="end">
+                <h2>Loading results...</h2>
+            </main>
+        );
+    }
 
-        setPlayerCount(1);
-        setPlayers([user.name]);
-        setOut([])
-        localStorage.removeItem("saved_players")
-        localStorage.removeItem("playersOut")
-        localStorage.removeItem("out")
-        localStorage.removeItem("playerCount")
-        navigate("/")
+    async function end() {
+        const res = await fetch("/api/game", {
+          method: "DELETE",
+          headers: {"Content-Type": "application/json"},
+        } )
+        if (res.ok) {
+            const data = await res.json()
+            navigate("/account")
+        }
     }
 
     function isOut(num) {
-        console.log(playersOut)
-        if (!playersOut) return true;
-        for (const player of playersOut){
-            if (player[0] == players[num]) {
+        console.log(game)
+        if (game.playersOut.length === 0) return true;
+        for (const outPlayer of game.playersOut){
+            let player = game.players[num]
+            console.log(player)
+            if (outPlayer[0] == player.name) {
                 return true;
             }
         }
@@ -31,8 +38,8 @@ export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, 
     }
 
     function outPhoto(num) {
-        for (const player of playersOut){
-            if (player[0] == players[num]) {
+        for (const player of game.playersOut){
+            if (player[0] == game.players[num].name) {
                 return player[1];
             }
         }
@@ -47,47 +54,21 @@ export function End( {user, setStatus, setPlayerCount, setPlayers, playerCount, 
   return (
     <main className= "end">
         <div id='end'>
-            {isOut(0) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(0)}></img>
-                <p>{players[0]}</p>
-            </div>}
-            {isOut(1) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(1)}></img>
-                <p>{players[1]}</p>
-            </div>}
-            {isOut(2) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(2)}></img>
-                <p>{players[2]}</p>
-            </div>}
-            {isOut(3) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(3)}></img>
-                <p>{players[3]}</p>
-            </div>}
-            {isOut(4) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(4)}></img>
-                <p>{players[4]}</p>
-            </div>}
-            {isOut(5) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(5)}></img>
-                <p>{players[5]}</p>
-            </div>}
-            {isOut(6) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(6)}></img>
-                <p>{players[6]}</p>
-            </div>}
-            {isOut(7) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(7)}></img>
-                <p>{players[7]}</p>
-            </div>}
-            {isOut(8) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(8)}></img>
-                <p>{players[8]}</p>
-            </div>}
-            {isOut(9) && <div className="player">
-                <img className= "photo" height= "100px" width= "80px" alt= "Player Elimination Photo" src={outPhoto(9)}></img>
-                <p>{players[9]}</p>
-            </div>}
-        </div>
+            {game.players.map((player, index) => {
+                    const outData = game.playersOut.find(outPlayer => 
+                        outPlayer[0] === player.name || outPlayer[0]?.name === player.name
+                    );
+                    if (!outData) return null;
+                    const photoSrc = outData[1] || "photo_placeholder.png";
+                    return (
+                        <div className="player" key={index}>
+                            <img className="photo" height="100px" width="80px" alt="Player Elimination Photo" src={photoSrc}></img>
+                            <p>{console.log(photoSrc)}</p>
+                            <p>{player.name}</p>
+                        </div>
+                    );
+                })}
+            </div>
         <button className="styled_button"  onClick={() => end()}>Leave Game</button>
     </main>
   );

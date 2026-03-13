@@ -8,7 +8,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
-    const [target, setTarget] = React.useState(localStorage.getItem("target") || null)
+    const [target, setTarget] = React.useState(null)
 
       useEffect(() => {
         console.log("loading target data...")
@@ -27,7 +27,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
         if (res.ok) {
           let data = await res.json();
 
-          console.log(data.target)
+          console.log(data.target.name)
           const game = data.game;
           setTarget(data.target)
           setGame(game)
@@ -80,13 +80,13 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
             context.scale(-1, 1);
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            const imageData = canvas.toDataURL('image/png');
+            const imageData = canvas.toDataURL('image/jpeg', 0.5);
             setImage(imageData);
             out(imageData);
         }
     }
 
-    //notifications
+    //out notifications
     async function out(takenPhoto){
         const response = await confirmOut(takenPhoto);
 
@@ -94,7 +94,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
             toast.custom(
                 <div className="out">
                     <img className="photo" alt="Photo of victim" src={takenPhoto ? takenPhoto : "photo_placeholder.png"}></img>
-                    <h3 className="out_text">{target} is Out!</h3>
+                    <h3 className="out_text">{target.name} is Out!</h3>
                     <button className="x_button" onClick={() => toast.remove()}>X</button>
                 </div>,
                 {style: {
@@ -120,12 +120,13 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
         }
     };
 
+    //confirm elimination
     function confirmOut(takenPhoto) {
         return new Promise((resolve) => (
             toast.custom(
                 <div className="confirmation">
                     <img className="confirm_photo" src={takenPhoto}></img>
-                    <p>Is this {target}?</p>
+                    <p>Is this {target.name}?</p>
                     <div className="confirm_buttons">
                         <button className="styled_button" onClick={() => {
                             toast.remove();
@@ -140,23 +141,19 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
         ))
     };
 
-
-    function takeOutPlayer(playerOut, photo){
-        const orderData = JSON.parse(localStorage.getItem("targetMemory"));
-        const circle = new LinkedList();
-        orderData.forEach(p => circle.add(p));
-        circle.tail.next = circle.head;
-        circle.remove(playerOut);
-        console.log(user)
-        const nextTarget = circle.targetOf(user.name);
-        
-        const newArray = circle.toArray();
-        localStorage.setItem("targetMemory", JSON.stringify(newArray));
-        localStorage.setItem("target", nextTarget);
-        setTarget(nextTarget);
-        const pair = [playerOut, photo]
-        setOut([...playersOut, pair]);
-        localStorage.setItem("out", JSON.stringify(playersOut));
+    //call removal
+    async function takeOutPlayer(playerOut, photo){
+        const res = await fetch("/api/assassins", {
+          method: "PATCH",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({player:playerOut, photo:photo})
+        } )
+        if (res.ok) {
+            const data = await res.json();
+            setTarget(data.target);
+            setGame(data.game);
+        }
+    
     }
 
     //target
@@ -173,47 +170,49 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
         takeOutPlayer(target, photo);
     }
 
-    useEffect( () => {
-        const interval = setInterval( () => {
-            if (playersOut.length < playerCount-2) {
-                const targetMemory = JSON.parse(localStorage.getItem("targetMemory"));
-                const num = Math.floor(Math.random() * targetMemory.length);
-                let testPerson = targetMemory[num];
-                if (testPerson === user.name) return;
-                takeOutPlayer(testPerson, "photo_placeholder.png");
+    // useEffect( () => {
+    //     const interval = setInterval( () => {
+    //         if (playersOut.length < playerCount-2) {
+    //             const targetMemory = JSON.parse(localStorage.getItem("targetMemory"));
+    //             const num = Math.floor(Math.random() * targetMemory.length);
+    //             let testPerson = targetMemory[num];
+    //             if (testPerson === user.name) return;
+    //             takeOutPlayer(testPerson, "photo_placeholder.png");
 
-                toast.custom(
-                <div className="out">
-                    <img className="photo" alt="Photo of victim" src={"photo_placeholder.png"}></img>
-                    <h3 className="out_text">{testPerson} is Out!</h3>
-                    <button className="x_button" onClick={() => toast.remove()}>X</button>
-                </div>,
-                {style: {
-                    background: 'transparent',
-                    minWidth: "90vw",
-                    minHeight: "40vh",
-                }})
-            }
-        },20000)
-        return () => clearInterval(interval);
-    },[playersOut, target])
+    //             toast.custom(
+    //             <div className="out">
+    //                 <img className="photo" alt="Photo of victim" src={"photo_placeholder.png"}></img>
+    //                 <h3 className="out_text">{testPerson} is Out!</h3>
+    //                 <button className="x_button" onClick={() => toast.remove()}>X</button>
+    //             </div>,
+    //             {style: {
+    //                 background: 'transparent',
+    //                 minWidth: "90vw",
+    //                 minHeight: "40vh",
+    //             }})
+    //         }
+    //     },20000)
+    //     return () => clearInterval(interval);
+    // },[playersOut, target])
 
-    // useEffect(() => {
-    //         if (target == user.name && playersOut.length == playerCount-1) end();
-    // }, [target])
+    useEffect(() => {
+        if (target) {
+            if (target.name == user.name && game.playersOut.length == game.playerCount-1) end();
+        }
+    }, [target])
 
     return (
         <main id='game'>
             <div><Toaster position="center"/></div>
             <div className="dropdown">
-                <button hidden className="styled_button" onClick={() => test()}>Remove Player</button>
+                <button className="styled_button" onClick={() => test()}>Remove Player</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>
 
                 <div className={`${dropdown} dropdown_content`}>
                     <img alt="Photo of Target" src="photo_placeholder.png" className="target_picture"></img>
-                    <h3>{target != user ? target : null}</h3>
+                    <h3>{ target ? target.name : null }</h3>
                 </div>
             </div>
 

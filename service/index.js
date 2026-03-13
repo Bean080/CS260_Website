@@ -1,5 +1,3 @@
-
-const {LinkedList} = require("./linkedList.js");
 const express = require('express');
 const app = express();
 app.use(express.static('public'));
@@ -7,7 +5,14 @@ const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
 
-app.use(express.json());
+//linked List
+const {LinkedList} = require("./linkedList.js");
+
+//photo modules
+const fs = require('fs');
+const path = require('path');
+
+app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 
@@ -167,14 +172,22 @@ app.put('/api/game', async (req, res) => {
 
 //delete
 app.delete('/api/game', async (req, res) => {
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
   const gameToken = req.cookies['gameToken'];
   const game = await getGame('gameToken', gameToken);
-  if (game) {
+  if (!game) {
+    res.status(401).send({msg: "How! theres no game"});
+  }
+  if (user.name === game.host.name) {
+    for (let pair of game.playersOut) {
+      deletePhoto(pair[1]);
+    }
     games = games.filter(g => g.gameToken !== gameToken);
-    clearGameCookie(res, game);
   }
 
-  res.send({});
+  clearGameCookie(res, game);
+  res.status(200).send({});
 });
 
 //retrieve
@@ -228,6 +241,9 @@ app.patch('/api/game/remove', async (req, res) => {
 app.patch('/api/game/start', async (req, res) => {
   const gameToken = req.cookies['gameToken'];
   const game = await getGame('gameToken', gameToken);
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+
   if (game && user) {
     const gameCircle = new LinkedList();
     gameCircle.createCircle(game.players); 
@@ -294,7 +310,17 @@ function clearGameCookie(res, game) {
   res.clearCookie('gameToken');
 }
 
-
+async function deletePhoto(fileName) {
+  if (fileName && fileName !== "photo_placeholder.png") {
+    try {
+      const filePath = path.join(__dirname, '..', 'public', fileName);
+      await fs.promises.unlink(filePath);
+      console.log("File deleted");
+    } catch (error) {
+      console.log("We are so cooked")
+    }
+  }
+}
 
 
 
@@ -337,6 +363,7 @@ app.get('/api/test/player', async (req, res) => {
 
 //____________________________assassins__________________________________//
 
+//get target
 app.get('/api/assassins', async (req, res) => {
   const gameToken = req.cookies['gameToken'];
   const game = await getGame('gameToken', gameToken);
@@ -346,10 +373,11 @@ app.get('/api/assassins', async (req, res) => {
     const savedOrder = game.targetList;
     if (savedOrder.length > 0) {
       const circle = new LinkedList();
-      currentOrder.forEach(p => circle.add(p));
-      console.log(circle)
+      savedOrder.forEach(p => circle.add(p));
       circle.tail.next = circle.head;
-      const target = circle.targetOf(req.body.player);
+      circle.head.prev = circle.tail;
+
+      const target = circle.targetOf(user);
       res.status(200).send({ game:game, target:target });
     }
   } else {
@@ -357,7 +385,52 @@ app.get('/api/assassins', async (req, res) => {
   }
 })
 
+//eliminate target
+app.patch('/api/assassins', async (req, res) => {
+  const gameToken = req.cookies['gameToken'];
+  const game = await getGame('gameToken', gameToken);
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
 
+  if (game) {
+    const savedOrder = game.targetList;
+    if (savedOrder.length > 0) {
+      const circle = new LinkedList();
+      savedOrder.forEach(p => circle.add(p));
+      circle.tail.next = circle.head;
+      circle.head.prev = circle.tail;
+
+      circle.remove(req.body.player);
+      const nextTarget = circle.targetOf(user);
+
+      let savedPhotoPath = "photo_placeholder.png"; 
+    
+      if (req.body.photo && req.body.photo.includes('base64')) {
+        //remove prefix
+        const base64Data = req.body.photo.replace(/^data:image\/\w+;base64,/, "");
+        //create file name
+        const fileName = `eliminated_${req.body.player.name}.jpg`;
+        //save to photoCache folder
+        const filePath = path.join(__dirname, '..', 'public', fileName)
+        fs.writeFileSync(filePath, base64Data, 'base64');
+        // save path
+        savedPhotoPath = `/${fileName}`;
+      }
+
+      const pair = [req.body.player, savedPhotoPath];
+      const newArray = circle.toArray();
+      game.targetList = newArray;
+      game.playersOut.push(pair)
+
+      console.log(game.playersOut.length)
+      console.log(nextTarget.name)
+
+      res.status(200).send({ game:game, target:nextTarget });
+    }
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+})
 
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;

@@ -71,12 +71,7 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
             headers: {"Content-Type": "application/json"},
             body: ""
         })
-        let res2 = await fetch("api/game", {
-            method: "DELETE",
-            headers: {"Content-Type": "application/json"},
-            body: ""
-        })
-        if (res.ok && res2.ok) {
+        if (res.ok) {
             localStorage.removeItem("user");
             setUser(null);
             toast.success("Logged Out");

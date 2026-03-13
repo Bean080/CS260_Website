@@ -43,45 +43,53 @@ class LinkedList {
   }
 
   remove(item) {
-    let current = this.head;
-    if (!current) return; 
+  let current = this.head;
+  if (!current) return;
 
-    const found = (node) => {
-        if (node === this.head && node === this.tail) {
-            this.head = null;
-            this.tail = null;
-        } else if (node === this.head) {
-            this.head = node.next;
-            this.head.prev = this.tail;
-            this.tail.next = this.head;
-        } else if (node === this.tail) {
-            this.tail = node.prev;
-            this.tail.next = this.head;
-            this.head.prev = this.tail;
-        } else {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        }
-        this.size--;
-    };
+  const itemName = typeof item === 'object' ? item.name : item;
+  let foundNode = null;
+  let count = 0;
 
-    let count = 0;
-    while (count < this.size) {
-        if (current.value === item) {
-            found(current);
-            return current.value;
-        }
-        current = current.next;
-        count++;
+  while (count < this.size) {
+    const currentName = typeof current.value === 'object' ? current.value.name : current.value;
+    if (currentName === itemName) {
+      foundNode = current;
+      break;
     }
+    current = current.next;
+    count++;
   }
+
+  if (!foundNode) return;
+
+  if (this.size === 1) {
+    this.head = null;
+    this.tail = null;
+  } else {
+    if (foundNode === this.head) {
+      this.head = foundNode.next;
+    }
+    if (foundNode === this.tail) {
+      this.tail = foundNode.prev;
+    }
+    foundNode.prev.next = foundNode.next;
+    foundNode.next.prev = foundNode.prev;
+  }
+  
+  this.size--;
+}
 
   targetOf(value) {
     if (!this.head) return null;
     let current = this.head;
     let count = 0;
+
+    const targetName = typeof value === 'object' ? value.name : value;
+
     while (count < this.size) {
-        if (current.value === value) {
+        const currentName = typeof current.value === 'object' ? current.value.name : current.value;
+
+        if (currentName === targetName) {
             return current.next ? current.next.value : null;
         }
         current = current.next;

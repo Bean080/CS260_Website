@@ -26,6 +26,7 @@ export default function App() {
   const [ pause, setPause] = React.useState(false);
   
   useEffect(() => {
+    console.log("loading user data...")
     try {
       getUser()
     } catch (error) {
@@ -50,6 +51,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    console.log("loading game data...")
     try {
       getLobby()
     } catch (error) {
@@ -81,7 +83,21 @@ export default function App() {
   },[playerCount]);
 
   function superTest() {
-    console.log(game.code)
+    logGame(game)
+    logUser(user)
+    console.log()
+  }
+
+
+  function logUser(u) {
+    console.log(u.name)
+    console.log(u.code)
+  }
+
+  function logGame(g) {
+    console.log(g.code)
+    console.log(g.playerCount)
+    console.log(g.host.name)
   }
 
   
@@ -107,7 +123,7 @@ export default function App() {
             
             <Routes>
                 <Route path='/' element={<Lobby user={user} game={game} gameCode={gameCode} setUser={setUser} setGame={setGame} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status}/>} exact />
-                <Route path='/game' element={<Game user={user} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
+                <Route path='/game' element={<Game user={user} game={game} setGame={setGame} setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/end' element={<End user={user}  setStatus={setStatus} setPlayerCount={setPlayerCount} setPlayers={setPlayers} playerCount={playerCount} players={players} host={host} status={status} playersOut={playersOut} setOut= {setOut}/>} />
                 <Route path='/account' element={<Account user={user} setGame={setGame} setCode={setCode} setUser={setUser} setHost={setHost} setPlayers={setPlayers} />} />
                 <Route path='*' element={<NotFound />} />

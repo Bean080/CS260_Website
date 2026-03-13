@@ -9,7 +9,8 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     const savedData = localStorage.getItem("saved_players");
     const playersMemory = savedData ? JSON.parse(savedData) : [];
 
-    function play() {
+    async function play() {
+        console.log("play")
         if (game.playerCount < 2) {
             toast.error("You need at least 2 people to play")
             return
@@ -17,8 +18,11 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
             toast.error("Invalid Code")
             return
         }
-
-        setStatus("playing");
+        let res = await fetch('/api/game/start', {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({status:'assassins'})
+        })
         navigate("/game");
     }
 

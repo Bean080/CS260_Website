@@ -1,38 +1,39 @@
 import React, { useRef, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import {LinkedList, shuffle} from "./linkedList.js";
 import './game.css';
 import { useNavigate } from 'react-router-dom';
 
 
-export function Game({user , setStatus , setPlayerCount , setPlayers , playerCount , players , host , status, playersOut, setOut}) {
+export function Game({user , game, setGame, setStatus , setPlayerCount , setPlayers , playerCount , players , host , status, playersOut, setOut}) {
     const [cameraOn, setCamera] = React.useState(false);
     const [dropdown, setDropdown] = React.useState("hide_dropdown")
     const navigate = useNavigate();
     const [target, setTarget] = React.useState(localStorage.getItem("target") || null)
 
-    useEffect(() => {
-        const savedOrder = localStorage.getItem("targetMemory");
-        let currentOrder;
-
-        if (!savedOrder) {
-            const gameCircle = new LinkedList();
-            gameCircle.createCircle(players); 
-            currentOrder = gameCircle.toArray();
-            localStorage.setItem("targetMemory", JSON.stringify(currentOrder));
-        } else {
-            currentOrder = JSON.parse(savedOrder);
+      useEffect(() => {
+        console.log("loading target data...")
+        try {
+          getTargets()
+        } catch (error) {
+          return
         }
+      },[]);
+    
+      async function getTargets() {
+        const res = await fetch("/api/assassins", {
+          method: "GET",
+          headers: {"Content-Type": "application/json"},
+        } )
+        if (res.ok) {
+          let data = await res.json();
 
-        const circle = new LinkedList();
-        currentOrder.forEach(p => circle.add(p));
-        circle.tail.next = circle.head;
-        
-        console.log(user)
-        const myTarget = circle.targetOf(user.name);
-        setTarget(myTarget);
-        localStorage.setItem("target", myTarget);
-    }, [user, players]);
+          console.log(data.target)
+          const game = data.game;
+          setTarget(data.target)
+          setGame(game)
+        }
+      }
+
 
     function end() {
         toast.dismiss();
@@ -197,9 +198,9 @@ export function Game({user , setStatus , setPlayerCount , setPlayers , playerCou
         return () => clearInterval(interval);
     },[playersOut, target])
 
-    useEffect(() => {
-            if (target == user.name && playersOut.length == playerCount-1) end();
-    }, [target])
+    // useEffect(() => {
+    //         if (target == user.name && playersOut.length == playerCount-1) end();
+    // }, [target])
 
     return (
         <main id='game'>

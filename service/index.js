@@ -1,3 +1,5 @@
+
+const {LinkedList} = require("./linkedList.js");
 const express = require('express');
 const app = express();
 app.use(express.static('public'));
@@ -203,6 +205,7 @@ app.patch('/api/game/add', async (req, res) => {
     }
 });
 
+//remove game
 app.patch('/api/game/remove', async (req, res) => {
     const gameToken = req.cookies['gameToken'];
     const game = await getGame('gameToken', gameToken);
@@ -221,6 +224,27 @@ app.patch('/api/game/remove', async (req, res) => {
     }
 });
 
+//start game (make targetList)
+app.patch('/api/game/start', async (req, res) => {
+  const gameToken = req.cookies['gameToken'];
+  const game = await getGame('gameToken', gameToken);
+  if (game && user) {
+    const gameCircle = new LinkedList();
+    gameCircle.createCircle(game.players); 
+    
+    game.status = req.body.status;
+    game.targetList = gameCircle.toArray();
+
+    for (player of game.players) console.log(player.name)
+    console.log("------------------")
+    for (player of game.targetList) console.log(player.name)
+
+    res.status(200).send({ msg: 'start', game:game });
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+})
+
 
 let games = [];
 
@@ -232,6 +256,7 @@ async function createGame(host, code) {
         host: host,
         players: [],
         playerCount: 0,
+        targetList: [],
         playersOut: []
     };
 
@@ -306,16 +331,31 @@ app.get('/api/test/player', async (req, res) => {
   const randomIndex = Math.floor(Math.random() * availablePlayers.length);
   const playerToJoin = availablePlayers[randomIndex];
   return res.status(200).send({ player: playerToJoin });
-});
+})
 
 
 
+//____________________________assassins__________________________________//
 
-
-
-
-
-
+app.get('/api/assassins', async (req, res) => {
+  const gameToken = req.cookies['gameToken'];
+  const game = await getGame('gameToken', gameToken);
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+  if (game) {
+    const savedOrder = game.targetList;
+    if (savedOrder.length > 0) {
+      const circle = new LinkedList();
+      currentOrder.forEach(p => circle.add(p));
+      console.log(circle)
+      circle.tail.next = circle.head;
+      const target = circle.targetOf(req.body.player);
+      res.status(200).send({ game:game, target:target });
+    }
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+})
 
 
 

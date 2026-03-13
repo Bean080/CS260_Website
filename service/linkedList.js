@@ -1,3 +1,5 @@
+
+
 class Node {
     constructor(value) {
         this.value = value;
@@ -6,7 +8,7 @@ class Node {
     }
 }
 
-export class LinkedList {
+class LinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
@@ -119,7 +121,7 @@ export class LinkedList {
 }
 
 
-export function shuffle(array) {
+function shuffle(array) {
   let currentIndex = array.length, randomIndex;
 
   while (currentIndex !== 0) {
@@ -131,3 +133,6 @@ export function shuffle(array) {
 
   return array;
 }
+
+
+module.exports = { LinkedList }

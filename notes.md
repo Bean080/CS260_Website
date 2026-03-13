@@ -86,3 +86,9 @@ I spent a crazy amount of time on this section but got it working suoer well. I 
 ## Service
 
 I really like the the use of endpoints. It definately slowed my website down quite a bit. Being data to persist on the front end is a bit tricky and I don't think i have the most eligante of solutions. Deploying to the server was an absolute headache. The Gemini Api is super cool, but I had to add a smaller one to meet the requirements of calling it from the front end.
+
+Aditional steps to deploy:
+1) npm install dotenv @google/generative-ai
+2) nano .env (then copy in my key)
+3) npx pm2 restart startup
+

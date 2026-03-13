@@ -3,7 +3,7 @@ import "./account.css";
 import {useNavigate} from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
-export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) {
+export function Account({user, game, setGame, setCode, setUser, setHost, setPlayers}) {
     const navigate = useNavigate();
     const [userText, setUserText] = React.useState("")
     const [passwordText, setPassText] = React.useState("")
@@ -34,7 +34,6 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
             const account = JSON.parse(data.account);
             setUser(account)
             setCode(account.code)
-            localStorage.setItem("user", JSON.stringify(account));
             toast.success('Signed in')
         } else {
             toast.error('Account Doesn\'t Exist')
@@ -58,7 +57,6 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
             console.log(account)
             setUser(account);
             setCode(account.code);
-            localStorage.setItem("user", JSON.stringify(account));
             toast.success('Created new user');
         } else {
             toast.error('Account already exists')
@@ -66,13 +64,15 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
     }
 
     async function logout() {
+        if (game) {
+            toast.error("bug to fix")
+        }
         let res = await fetch("api/auth", {
             method: "DELETE",
             headers: {"Content-Type": "application/json"},
             body: ""
         })
         if (res.ok) {
-            localStorage.removeItem("user");
             setUser(null);
             toast.success("Logged Out");
         }
@@ -166,10 +166,25 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
         }
     }
 
+    async function getHandlerMessage() {
+
+        try {
+            const res = await fetch("https://api.adviceslip.com/advice");
+            const data = await res.json();
+            toast.custom(
+                <div className="HQ">
+                    <p>Message from HQ:</p>
+                    <p>{data.slip.advice}</p>
+                    <button className="styled_button" onClick={() => toast.remove()}>X</button>
+                </div>, {duration: Infinity})
+        } catch (error) {
+            toast.error("Comms are down.");
+        }
+    }
+
 
   return (
     <main id="account">
-        <div><Toaster/></div>
         <div className="center">
             <p>Sign In</p>
             <div><input id="user" type="text" placeholder="Username" onChange={userChange} /></div>
@@ -189,6 +204,7 @@ export function Account({user, setGame, setCode, setUser, setHost, setPlayers}) 
         </div>
         {user && <div className="center">
             <button className="styled_button" onClick={toggleAI}>Toggle AI : {user.ai? "On":"Off"}</button>
+            <button className="styled_button" onClick={getHandlerMessage}>Contact HQ</button>
         </div>}
         <div className="center"></div>
     </main>

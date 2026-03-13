@@ -125,7 +125,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
                     background: 'transparent',
                     minWidth: "90vw",
                     minHeight: "40vh",
-                }}
+                }, position: 'bottom-center'}
             );
             takeOutPlayer(target, takenPhoto);
         } else {
@@ -139,7 +139,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
                     background: 'transparent',
                     minWidth: "90vw",
                     minHeight: "40vh",
-                }}
+                }, position: 'bottom-center'}
             )
         }
     };
@@ -167,7 +167,7 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
                             resolve(false)
                         }}>No...</button>
                     </div>
-                </div>, {duration: Infinity})
+                </div>, {duration: Infinity, position: 'bottom-center'})
         ))
     };
 
@@ -236,9 +236,8 @@ export function Game({user , game, setGame, setStatus , setPlayerCount , setPlay
 
     return (
         <main id='game'>
-            <div><Toaster position="center"/></div>
             <div className="dropdown">
-                <button className="styled_button" onClick={() => test()}>Remove Player</button>
+                <button hidden className="styled_button" onClick={() => test()}>Remove Player</button>
                 <button className="styled_button drop_button" type="button" onClick={() => showTarget()}>
                     View Target
                 </button>

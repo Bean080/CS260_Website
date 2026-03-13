@@ -10,7 +10,15 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     const playersMemory = savedData ? JSON.parse(savedData) : [];
 
     async function play() {
-        console.log("play")
+        if (!game) {
+            toast.error("HOST or JOIN a game")
+            return
+        } else if (game.playersCount < 3) {
+            toast.error("Requires 3 players")
+            return
+        }
+
+
         if (game.playerCount < 2) {
             toast.error("You need at least 2 people to play")
             return
@@ -29,6 +37,11 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
 
     async function join () { //I will need to add player as an argument
         //a temporary example
+        if (!game) {
+            toast.error("HOST or JOIN a game")
+            return
+        }
+
         let response = await fetch("api/test/player", {
             method: "GET",
             headers: {"Content-Type": "application/json"},
@@ -63,6 +76,13 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     }
 
     async function removePlayer(playerLeaving) {
+        if (!game) {
+            toast.error("HOST or JOIN a game")
+            return
+        } else if (game.playersCount < 2) {
+            toast.error("Lobby is empty")
+            return
+        }
         let res = await fetch("/api/game/remove", {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
@@ -99,21 +119,20 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     }
 
 
-    // useEffect( () => {
-    //     const interval = setInterval( () => {
-    //         if (user.name) join();
-    //     },15000)
-    //     return () => clearInterval(interval);
-    // },[players, playerCount])
-
     function lobbyTest() {
+        if (!game) {
+            toast.error("HOST or JOIN a game")
+            return
+        } else if (game.playersCount < 2) {
+            toast.error("Lobby is empty")
+            return
+        }
         removePlayer(game.players[1])
     }
 
 
   return (
     <main id="lobby">
-        <div><Toaster/></div>
         <div className= "players">
             {joined(2) && <div className="player"> 
                 <img className= "photo" alt= "Player1" src="photo_placeholder.png"></img>

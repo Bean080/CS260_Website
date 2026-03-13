@@ -151,3 +151,39 @@ footer{
   margin: 0 auto;
   
 }
+
+.HQ {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+  gap: 1.5rem;
+
+  min-height: 60vh; 
+  width: 60vw;
+
+  text-align: center;
+  overflow-wrap: break-word; 
+
+  overflow-y: auto;
+
+  background-color: beige;
+  border: 2px solid beige;
+  border-radius: 20px;
+  box-shadow: 0 0 5em rgba(0, 0, 0, .9);
+
+  color:rgb(84, 8, 50);
+  font-size: 2rem;
+}
+
+.HQ p {
+    font-size: 1rem;
+    margin: 0; 
+    max-width: 100%;
+}
+
+.HQ::-webkit-scrollbar {
+  display: none;
+}

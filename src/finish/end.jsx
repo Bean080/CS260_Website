@@ -20,8 +20,8 @@ export function End( {user, game, setGame, setStatus, setPlayerCount, setPlayers
         } )
         if (res.ok) {
             const data = await res.json()
-            navigate("/account")
         }
+        navigate("/account")
     }
 
     function isOut(num) {

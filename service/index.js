@@ -357,7 +357,7 @@ const names = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin",
   for (let name of names) {
     const user = await createUser(name, "00000000");
 
-    const imagePath = path.join(__dirname, '..', 'public', 'IMG_8236.jpeg');
+    const imagePath = path.join(__dirname, 'public', 'IMG_8236.jpeg');
     const rawBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
     const profileString = `data:image/jpeg;base64,${rawBase64}`;
 
@@ -506,6 +506,27 @@ app.post('/api/ai/verify', async (req, res) => {
         console.error("Gemini Verification Failed:", error);
         res.status(500).send({ msg: "AI verification failed" });
     }
+});
+
+
+
+
+
+
+
+
+
+app.get('/account', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/game', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/end', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 

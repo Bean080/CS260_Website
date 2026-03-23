@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 app.use(express.static('public'));
+app.use(express.json({ limit: '50mb' }));
+app.use(cookieParser());
+
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
 const bcrypt = require('bcryptjs');
@@ -13,14 +16,12 @@ const fs = require('fs');
 const path = require('path');
 
 //Gemini
-
 require('dotenv').config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { stringify } = require('querystring');
 
-
-app.use(express.json({ limit: '50mb' }));
-app.use(cookieParser());
+//DB
+const DB = require("./database.js")
 
 
 // ______________________User__________________//
@@ -488,7 +489,7 @@ app.post('/api/ai/verify', async (req, res) => {
             }
         ];
 
-        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
         const prompt = "Look closely at the person in the first image and the person in the second image. Is it the exact same person? Reply with ONLY the word 'YES' or 'NO'.";
 
         const result = await model.generateContent([prompt, ...imageParts]);

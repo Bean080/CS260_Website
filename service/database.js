@@ -9,7 +9,7 @@ const games = db.collection('games');
 const users = db.collection('users');
 const photos = db.collection('photos');
 
-module.exports {
+module.exports = {
     createUser,
     createGame,
     getUser, 
@@ -20,7 +20,7 @@ module.exports {
     updateGame,
     addPhoto,
     deletePhoto
-}
+};
 
 
 async function createUser(user) {

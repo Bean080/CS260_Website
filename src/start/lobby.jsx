@@ -9,6 +9,16 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
     const savedData = localStorage.getItem("saved_players");
     const playersMemory = savedData ? JSON.parse(savedData) : [];
 
+    console.log(game)
+
+    if (!game) {
+        return (
+            <main className="end">
+                <h2>Create a game</h2>
+            </main>
+        );
+    }
+
     async function play() {
         if (!game) {
             toast.error("HOST or JOIN a game")
@@ -49,6 +59,7 @@ export function Lobby({user , game, gameCode,  setUser , setGame , setPlayerCoun
 
         const data = await response.json();
         let player = data.player;
+        console.log(player)
         //end temporary
         let res = await fetch("/api/game/add", {
             method: "PATCH",

@@ -21,6 +21,7 @@ export function End( {user, game, setGame, setStatus, setPlayerCount, setPlayers
         if (res.ok) {
             const data = await res.json()
         }
+        setGame(null)
         navigate("/account")
     }
 

@@ -17,9 +17,7 @@ module.exports = {
     deleteUser, 
     deleteGame, 
     updateUser, 
-    updateGame,
-    addPhoto,
-    deletePhoto
+    updateGame
 };
 
 
@@ -31,12 +29,12 @@ async function createGame(game) {
     return games.insertOne(game)
 }
 
-async function getUser(user) {
-    return users.findOne({name:user.name})
+async function getUser(field, value) {
+    return users.findOne({[field]:value})
 }
 
-async function getGame(game) {
-    return games.findOne({code:game.code})
+async function getGame(field, value) {
+    return games.findOne({[field]:value})
 }
 
 async function deleteUser(user) {
@@ -44,7 +42,7 @@ async function deleteUser(user) {
 }
 
 async function deleteGame(game) {
-    return games.delteOne({code: game.code})
+    return games.deleteOne({code: game.code})
 }
 
 async function updateUser(user) {

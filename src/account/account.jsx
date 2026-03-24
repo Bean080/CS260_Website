@@ -125,7 +125,7 @@ export function Account({user, game, setGame, setCode, setUser, setHost, setPlay
         } else {
             toast.error("Lobby code in use")
         }
-        //navigate("/");
+        navigate("/");
     }
 
     async function join() {

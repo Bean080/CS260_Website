@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 app.use(express.json({ limit: '50mb' }));
-app.use(cookieParser());
 
 const cookieParser = require('cookie-parser');
 const uuid = require('uuid');
@@ -19,6 +18,8 @@ const path = require('path');
 require('dotenv').config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { stringify } = require('querystring');
+
+app.use(cookieParser());
 
 //DB
 const DB = require("./database.js")
@@ -40,7 +41,6 @@ app.post('/api/auth', async (req, res) => {
 
 //authenticate
 app.put('/api/auth', async (req, res) => {
-  console.log('Incoming Body:', req.body);
   const user = await getUser('name', req.body.name);
   if (user && (await bcrypt.compare(req.body.password, user.password))) {
     setAuthCookie(res, user);
@@ -79,6 +79,7 @@ app.patch('/api/user/code', async (req, res) => {
   const user = await getUser('token', token);
   if (user) {
       user.lastCode = req.body.code;
+      await DB.updateUser(user)
       res.status(200).send({msg: 'Code Updated', lastCode: user.lastCode });
   } else {
       res.status(401).send({ msg: 'Unauthorized' });
@@ -90,6 +91,7 @@ app.patch('/api/user/photo', async (req, res) => {
   const user = await getUser('token', token);
   if (user) {
       user.photo = req.body.photo;
+      await DB.updateUser(user)
       res.status(200).send(JSON.stringify({user:user}));
   } else {
       res.status(401).send({ msg: 'Unauthorized' });
@@ -104,13 +106,14 @@ app.patch("/api/user/ai", async (req,res) => {
   } else {
     user.ai = true;
   }
+  await DB.updateUser(user)
   res.status(200).send(JSON.stringify({user:user}));
 });
 
-let users = [];
-
 async function createUser(name, password) {
   const passwordHash = await bcrypt.hash(password, 10);
+
+  if (await DB.getUser('name', name)) return;
 
   const user = {
         name: name,
@@ -120,14 +123,14 @@ async function createUser(name, password) {
         photo: "photo_placeholder.png",
     };
 
-  users.push(user);
+  await DB.createUser(user);
 
   return user;
 }
 
 async function getUser(field, value) {
   if (value) {
-    return users.find((user) => user[field] === value);
+    return await DB.getUser(field, value);
   }
   return null;
 }
@@ -140,6 +143,8 @@ function setAuthCookie(res, user) {
     httpOnly: true,
     sameSite: 'strict',
   });
+
+  DB.updateUser(user);
 }
 
 function clearAuthCookie(res, user) {
@@ -154,14 +159,14 @@ function clearAuthCookie(res, user) {
 app.post('/api/game', async (req, res) => {
   const token = req.cookies['token'];
   const user = await getUser('token', token);
+
   if (!user) {
     res.status(401).send({ msg: 'Unauthorized' });
-  }
-  if (await getGame('code', req.body.code)) {
+
+  } else if (await getGame('code', req.body.code)) {
     res.status(409).send({ msg: 'Existing game' });
 
   } else {
-
     const game = await createGame(user, req.body.code);
     setGameCookie(res, game);
     game.host = user;
@@ -169,6 +174,9 @@ app.post('/api/game', async (req, res) => {
     game.playerCount = game.playerCount + 1
 
     user.code = req.body.code;
+
+    await DB.updateUser(user)
+    await DB.updateGame(game)
     res.status(200).send({ code: game.code, host: JSON.stringify(user), game:game});
   }
 });
@@ -184,6 +192,7 @@ app.put('/api/game', async (req, res) => {
     game.players.push(user)
     game.playerCount = game.playerCount + 1
 
+    await DB.updateGame(game)
     res.status(200).send({ 
         host: JSON.stringify(game.host)
     });
@@ -203,12 +212,11 @@ app.delete('/api/game', async (req, res) => {
   if (!game) {
     res.status(401).send({msg: "How! theres no game"});
   }
-  if (user.name === game.host.name) {
-    for (let pair of game.playersOut) {
-      deletePhoto(pair[1]);
-    }
-    games = games.filter(g => g.gameToken !== gameToken);
+
+  for (let pair of game.playersOut) {
+    deletePhoto(pair[1]);
   }
+  await DB.deleteGame(game)
 
   clearGameCookie(res, game);
   res.status(200).send({});
@@ -235,9 +243,10 @@ app.patch('/api/game/add', async (req, res) => {
     if (user && game.playerCount < 9) {
         game.players.push(req.body.joiner)
         game.playerCount = game.players.length;
+
+        await DB.updateGame(game);
         res.status(200).send({msg: 'Joined Game', game:game});
     } else {
-      console.log(game.players)
         res.status(401).send({ msg: 'Unauthorized' });
     }
 });
@@ -255,6 +264,7 @@ app.patch('/api/game/remove', async (req, res) => {
         game.players = game.players.filter(p => p.name !== targetName);
         game.playerCount = game.players.length;
 
+        await DB.updateGame(game);
         res.status(200).send({game:game});
     } else {
         res.status(401).send({ msg: 'Unauthorized' });
@@ -279,14 +289,13 @@ app.patch('/api/game/start', async (req, res) => {
     console.log("------------------")
     for (player of game.targetList) console.log(player.name)
 
+    await DB.updateGame(game);
     res.status(200).send({ msg: 'start', game:game });
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 })
 
-
-let games = [];
 
 async function createGame(host, code) {
 
@@ -300,24 +309,18 @@ async function createGame(host, code) {
         playersOut: []
     };
 
-  games.push(game);
+  await DB.createGame(game);
 
   return game;
 }
 
 async function getGame(field, value) {
   if (value) {
-    return games.find((game) => game[field] === value);
+    return await DB.getGame(field,value);
   }
   return null;
 }
 
-async function getPlayer(game, field, value) {
-  if (value) {
-    return game.players.find((p) => p[field] === value);
-  }
-  return null;
-}
 
 function setGameCookie(res, game) {
   game.gameToken = uuid.v4();
@@ -327,6 +330,8 @@ function setGameCookie(res, game) {
     httpOnly: true,
     sameSite: 'strict',
   });
+
+  DB.updateGame(game);
 }
 
 function clearGameCookie(res, game) {
@@ -356,9 +361,19 @@ const names = ["James", "Garry", "Tiffany", "Wallace", "David", "Liz", "Dallin",
 
 (async function setupFakeUsers() {
   for (let name of names) {
-    const user = await createUser(name, "00000000");
+    let user = await createUser(name, "00000000");
 
-    const imagePath = path.join(__dirname, 'public', 'IMG_8236.jpeg');
+    if (!user) {
+      user = {
+        name: name,
+        password: "00000000",
+        ai: false,
+        code: "####",
+        photo: "photo_placeholder.png",
+    };
+    }
+
+    const imagePath = path.join(__dirname, '../public', 'IMG_8236.jpeg'); // <-----------------------------------------------------------------------"../"
     const rawBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
     const profileString = `data:image/jpeg;base64,${rawBase64}`;
 
@@ -399,6 +414,7 @@ app.get('/api/assassins', async (req, res) => {
   const game = await getGame('gameToken', gameToken);
   const token = req.cookies['token'];
   const user = await getUser('token', token);
+
   if (game) {
     const savedOrder = game.targetList;
     if (savedOrder.length > 0) {
@@ -452,8 +468,7 @@ app.patch('/api/assassins', async (req, res) => {
       game.targetList = newArray;
       game.playersOut.push(pair)
 
-      console.log(game.playersOut.length)
-      console.log(nextTarget.name)
+      DB.updateGame(game);
 
       res.status(200).send({ game:game, target:nextTarget });
     }
@@ -508,28 +523,6 @@ app.post('/api/ai/verify', async (req, res) => {
         res.status(500).send({ msg: "AI verification failed" });
     }
 });
-
-
-
-
-
-
-
-
-
-app.get('/account', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-app.get('/game', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-app.get('/end', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 
 
 

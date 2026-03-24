@@ -55,6 +55,14 @@ app.put('/api/auth', async (req, res) => {
 app.delete('/api/auth', async (req, res) => {
   const token = req.cookies['token'];
   const user = await getUser('token', token);
+  const gameToken = req.cookies['gameToken'];
+  const game = await getGame('gameToken', gameToken);
+  if (game) {
+    game.players = game.players.filter(player => player !== user);
+    game.playerCount = game.players.length;
+    await DB.updateGame(game);
+  }
+
   if (user) {
     clearAuthCookie(res, user);
   }

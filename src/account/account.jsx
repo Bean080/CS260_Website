@@ -40,7 +40,6 @@ export function Account({user, game, setGame, setCode, setUser, setHost, setPlay
         }
     };
 
-
     async function createAccount() {
         if (!validCredentials(userText, passwordText)) {
             return;

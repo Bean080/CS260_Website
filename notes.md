@@ -94,5 +94,5 @@ Aditional steps to deploy:
 
 ## Database
 
-This deliverable was very easy compare to the last few. It seemed to help a bit with my websites performance, though there is still a lot of work on that front. The persisting user info is also VERY nice.
+This deliverable was very easy compare to the last few. It seemed to help a bit with my websites performance, though there is still a lot of work on that front. The persisting user info is also VERY nice. Getting the server to deploy is becoming increasingly difficult as it gets more complicated.
 

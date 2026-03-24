@@ -92,3 +92,7 @@ Aditional steps to deploy:
 2) nano .env (then copy in my key)
 3) npx pm2 restart startup
 
+## Database
+
+This deliverable was very easy compare to the last few. It seemed to help a bit with my websites performance, though there is still a lot of work on that front. The persisting user info is also VERY nice.
+
